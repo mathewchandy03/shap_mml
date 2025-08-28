@@ -1,0 +1,235 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{beamer}
+\usepackage{natbib}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{float}
+%Information to be included in the title page:
+\title{Uncertainty Quantification for Multimodal Learning Using the Shapley Value Framework (Model-Agnostic)}
+\date{2025}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Notation for Multimodal Learning}
+\begin{itemize}
+    \item An approach was introduced by \citet{he2024efficient} but it did not account
+    for uncertainty of Shapley values
+    \item Random variables $X \in \mathcal{X} = \mathcal{X}_1\times\cdots \times\mathcal{X}_p$ for $p$ modalities and $Y \in \mathcal{Y} \subseteq \mathbb{R}$ with values $x$ and $y$, respectively
+    % \item Let $\mathbf{x} = \{x_j\}_{j=1}^d$ be a random vector, and $\mathbf{x}_S = \{x_j\}_{j \in S}$, where 
+    % $S \subseteq \{1,...,d\}$
+    \item $X_j \in \mathcal{X}_j \subseteq \mathbb{R}^{d_j}$ for $j \in \{1,...,p\}$,
+    $V = \{X_1,...,X_p\}$
+    \item $S \subseteq \{1,..,p\}$, instantiation
+    $v= \{x_1,...,x_p\}$, $v_S = \{x_j\}_{j\in S}$
+    \item We assume that each modality has the same sample size, so we have 
+    $v^{(i)} = \{x_1^{(i)}, ...,x_p^{(i)}\}$ for $i \in \{1,...,n\}$
+    \item We have some value function 
+        $\text {val}(S, v)$ which attributes some loss to
+        coalition $S$ for sample $v$
+    \item Denote $\hat \mu_S(v)$ as the model
+    prediction using all modalities $j \in S$
+    \item $\phi_j(v^{(n+1)}, y^{(n+1)}) =\sum_{S \subseteq [p] \setminus \{j\}}\frac{|S|!(p-|S|-1)!}{p!}[\text {val}(S,v)-\text {val}(S \cup j,v)]$
+%     \item
+% Define conditional distribution function
+% $G_j(t)=\mathbb{P}(\phi_j(v^{(n+1)}, y^{(n+1)}) \leq t|\mathcal{D}_1), t\in \mathbb{R}.$
+    
+\end{itemize}
+\end{frame}
+
+
+
+% \begin{frame}{Choice of Value Function}
+% \begin{itemize}
+%     \item Many options... quite flexible
+%     \item \citet{he2024efficient}'s utility function with constant $c$, loss function $\ell$, and predictor $h \in \mathcal{H}$ with input $w$: $$f_u(S) := \underset{c\in\mathcal{Y}}{\inf}
+%     \mathbb{E}[\ell(Y,c)]-\underset{h\in\mathcal{H}}{\inf}
+%     \mathbb{E}[\ell(Y,h)]$$
+%     \item Classification: If $Y \in \{0,...,K\}$, $\hat Y = \{\hat Y_0, ..., \hat Y_K\}$ such that $\sum_{k=0}^K \hat Y_k = 1$,
+%     and $\ell(Y, \hat Y)=\sum_{k=0}^K \mathbf{1}(Y=1) \log \hat Y_k$, then $f_u(S) = I(S; Y)$
+%     \item Regression: If $\ell(Y, \hat Y)= (Y - \hat Y )^2$, then $f_u(S) = \text{Var}(\mathbb{E}[Y|S])$
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}{Approach 1: Split Conformal Inference 
+% of Shapley Values a la \citet{watson2023explaining}}
+% \begin{algorithmic}
+% \Require Data $(w^{(i)}, y^{(i)})$, $i=1,...,n$, miscoverage level $\alpha \in (0,1)$, algorithm $\mathcal{A}$, positive Shapley value is beneficial
+% \Ensure Prediction band, over $w = \{x_1,...,x_p\}$, with $x_j \in \mathcal{X}_j$ 
+% for $j \in \{1,...,p\}$
+% \State Randomly split $\{1, ...,n\}$ into
+% two equal-sized subsets $\mathcal{I}_1$, 
+% $\mathcal{I}_2$
+% \State $\hat h = \mathcal{A}(\{(x_i, y_i):i \in \mathcal{I}_1\})$
+% \State Compute $\phi_v(j,w^{(i)})$, $j \in \{1,...,p\}$, $i \in \mathcal{I}_2$
+% \State Return $\pi(0, j) = \frac{\sum_{i=\lceil n /2+1 \rceil}^n \mathbf 1\{\phi_v(j,w^{(i)}) \leq 0\}}{n/2}$, $j \in \{1,...,p\}$
+
+% \end{algorithmic}
+% \end{frame}
+
+
+% \begin{frame}{Approach 2: LOCO Global Measure of
+% Variable Importance}
+% Let $$\Delta_j(X_{n+1}, Y_{n+1}) = |Y_{n+1}-\hat \mu_{(-j)}(X_{n+1})|-|Y_{n+1}-\hat \mu(X_{n+1})|,$$ and
+% define conditional distribution function
+% $$G_j(t)=\mathbb{P}(\Delta_j(X_{n+1},Y_{n+1}) \leq t|\mathcal{D}_1), t\in \mathbb{R}.$$ We are testing
+% the importance of d variables.
+% \begin{algorithmic}
+% \Require Randomly split $\{1, ...,n\}$ into
+% two subsets $\mathcal{I}_1 $ and its complement
+% $\mathcal{I}_2$, 
+% $\mathcal{D}_k = \{(X_i, Y_i):i \in \mathcal{I}_k\},k=1,2$
+% \Ensure 
+% \For{$j \in \{1,...,d\}$}
+% \State Compute $\hat \theta_j = (n/2)^{-1} 
+% \sum_{i \in \mathcal I_2} \Delta_j(X_i, Y_i)$
+% \State Compute $s_j$, the sample standard deviation measured on $\mathcal{D}_2$
+% \If{$\sqrt{n/2} \cdot \hat \theta_j / s_j \leq z_{\alpha/d}$}
+
+% remove $j$
+% \EndIf
+% \EndFor
+
+% \end{algorithmic}
+% \end{frame}
+\begin{frame}{Intuitions}
+\begin{itemize}
+    \item Convergence is independent of $p$ because
+    $\hat \phi_j$, $  \widehat {\underline \tau ^ 2 _ j}$, and
+    $\widehat{\bar \tau ^ 2 _j}$ are all univariate
+    \item Each of these can be treated as a mean
+    of a sample of i.i.d. values, where each value is constructed from a single observation
+    % \item Further, because the variance is positive and
+    % the third moment if finite, the Berry-Esseen theorem
+    % suggests uniform convergence
+    \item Then we can make asymptotic inferences about
+    global importance scores 
+    $\phi_j$, $\underline \tau ^ 2 _ j$, $\bar \tau ^ 2 _j$ under the CLT
+    
+    
+\end{itemize} 
+\end{frame}
+
+
+
+\begin{frame}{Approach 1: LOMO Global Measure of
+Modality Importance with Shapley Values \citep{lei2018distribution}}
+\begin{algorithmic}
+\Require Randomly split $\{1, ...,n\}$ into
+two equal-sized subsets $\mathcal{I}_1 $ and its complement
+$\mathcal{I}_2$, 
+$\mathcal{D}_k = \{(v^{(i)}, y^{(i)}):i \in \mathcal{I}_k\},k=1,2$
+\For{$S \subseteq [p]$}
+Train $\hat \mu_S$ on $\mathcal{D}_1 $
+\EndFor
+\For{$j \in \{1,...,|S|\}$}
+\State Compute $\hat \phi_j = (n/2)^{-1} 
+\sum_{i \in \mathcal I_2} \phi_j(v^{(i)}, y^{(i)})$
+\State Compute $s_j$, the sample standard deviation measured on $\mathcal{D}_2$
+\If{$\sqrt{n/2} \cdot \hat \phi_j / s_j \leq z_{\alpha/|S|}$}
+
+
+remove $j$
+\EndIf
+\EndFor
+
+\end{algorithmic}
+
+Issue is that computing these Shapley Values can
+be expensive.
+\end{frame}
+
+
+\begin{frame}{Approach 2: Global LOMO with Sobol Index Brackets 
+of Shapley Values \citep{owen2014sobol}}
+% \begin{itemize}
+%     \item $\underline \tau ^ 2 _ u= \sum_{v \subseteq u} \sigma^2_v$ and $\bar \tau^2_u=\sum_{v:v\cap u\neq \emptyset}\sigma^2_v$
+%     \item $\sigma^2_u=\text{var}(f_u(\mathbf x))$ for
+%     some surrogate function $f$
+% \end{itemize}
+\begin{algorithmic}
+\Require Fast surrogate function $f$ that approximates
+original model
+
+\State Train $f$ on $\mathcal{D}_1 $
+\State Draw $\mathcal{D}_A$ and $\mathcal{D}_B$ (both using indices $i \in \{1,n/2$\}) from $\mathcal{D}_2$ 
+% ,
+% and denote $\mathcal{D}_A = \{(v^{(i)},y^{(i)}):i \in \mathcal{I}_A\}$
+% and $\mathcal{D}_B = \{(x^{(i)}, y^{(i)}):i \in \mathcal{I}_B\}$
+\For{$j \in \{1,...,|S|\}$}
+% \State Denote $A = \{v^{(i)}:i \in \mathcal{I}_A\}$,
+% $B = \{v^{(i)}:i \in \mathcal{I}_B\}$,
+% $C = \{v^{(l)}_{\{j\}} \cup v^{(l)}_{-\{j\}}:l(i,k) \in \mathcal{I}_C, k \in \mathcal{I}_B\}$, $D = \{v^{(i)}_{-\{j\}} \cup v^{(k)}_{\{j\}}:i \in \mathcal{I}_A, k \in \mathcal{I}_B\}$
+\For{$i \in \{1,...,n/2\}$}
+\State $v^{(i)} \in \mathcal{D}_A$, $w^{(i)} \in \mathcal{D}_B$
+\State Compute $ {\underline t^2_{j}}^{(i)} = f(v^{(i)})(f(v^{(i)}_{\{j\}}\cup w^{(i)}_{-\{j\}}) - f(w^{(i)}))$,
+
+\State Compute $ {\bar t^2_{j}}^{(i)} = (1/2)((f(w^{(i)}) -f(v^{(i)}_{\{j\}}\cup w^{(i)}_{-\{j\}}))^2)$
+\EndFor
+\State Compute $\widehat{\underline \tau^2_{j}} = \frac{2}{n}\sum_{i=1}^{n/2} {\underline t^2_{j}}^{(i)}$, 
+$\widehat{\bar \tau^2_{j} }= \frac{2}{n}\sum_{i=1}^{n/2} {\bar t_{j}^2}^{(i)}$, $\underline s_j$, and $\bar s_j$
+\If{$\sqrt{n/2} \cdot \widehat{\underline  \tau^2_j} / \underline s_j \leq z_{\alpha/|S|}$ and conservative} remove $j$
+\Else{$\sqrt{n/2} \cdot   \widehat{\bar \tau^2_j} / \bar s_j \leq z_{\alpha/|S|}$ and liberal}, remove $j$
+\EndIf
+\EndFor
+
+\end{algorithmic}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+% \begin{frame}{}
+% \begin{algorithmic}
+% \Require Full set $V = \{X_1, ...,X_k\}$,
+% constraint $q \in \mathbb{Z}^+$, set function
+% $f: 2^V \mapsto \mathbb{R}$, $p \in \mathbb{Z}^+$, with $p \leq q \leq |V|$
+% \Ensure Subset $S_p$
+% \State initialize $S_0 = \emptyset$
+% \For{i = 0, 1,...,p-1}
+% \State $X^i = \arg \max_{X_j \in V\setminus S_i }(f(S_i \cup\{X_j\})- f(S_i))$
+% \State $S_{i+1} = S_i \cup \{X_i\}$
+% \EndFor
+% \end{algorithmic}
+
+% \end{frame}
+
+
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliography{main}
+\end{frame}
+
+
+
+\bibliographystyle{chicago}
+\end{document}
+

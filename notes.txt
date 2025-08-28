@@ -1,0 +1,105 @@
+tasks for 8/27:
+- rigorous proof for basic split conformal with shapley value
+- read conformal prediction beyond exchangeability
+- focus on shapley value
+- write down proofs based on computation of shapley value
+and integrate it with conformal
+- specify required assumptions for validity of conformal,
+try to argue if each assumption is valid
+- run simulation to demonstrate how to compute
+- jmlr 
+- do synthetic data with regression
+- confidence interval for attribution for each modality
+- put proofs in main.tex
+- summarize algorithm in section
+
+
+
+
+
+questions for 8/26:
+- Unsure what proofs I had to do for Global LOCO
+- For each modality, Shapley value is a univariate summary of a single observed sample
+- I was also unsure of how to use both sobol indices simultaneously
+- The best idea I had was to use the smaller sobol index
+when we especially want a smaller model
+and the larger one when we especially want
+a larger model
+
+
+
+tasks for 8/18:
+- read https://artowen.su.domains/reports/sobolshapley.pd
+- figure out how to include Shapley value into
+lei loco approach look at proofs
+- write out proof in slide
+
+
+tasks for 8/23:
+- where to go from coverage probabilities of sobol index
+to shapley value
+- I think sobol index method and conformal inference
+must be separate because sobol index requires all samples
+- also shapley value must be monotone to use
+sobol approach, then cannot use 0 in interval tactic
+
+
+questions for 8/18:
+- seems more useful for inference
+about shapley values
+- but i'm struggling with model selection
+- I was thinking using the mean Shapley value
+over the data and then some uncertainty
+measure as a tie-breaker, but I don't think
+that works because such a tie would never happen
+because the Shapley value may be continuous
+
+tasks for 8/14:
+- p-value approach doesn't work
+- need to think of something else
+- maybe standard error estimate from sample,
+- Then create rejection region
+- maybe use d from paper then center around 0
+- do we want negative or positive shapley values?
+
+tasks for 8/12:
+- read papers I haven't
+- read sections 5 and 6 of he jmlr
+- understand algorithm implementation and 
+change it for uncertainty quantification
+
+tasks for 8/8:
+- read Distribution-Free
+Predictive Inference for Regression.
+- Method for modality selection
+based on uncertainty quantification of
+shapley values that is computationally
+efficient
+- refer to he jmlr paper
+- https://arxiv.org/pdf/2505.00212
+- https://academic.oup.com/jrsssb/advance-article/doi/10.1093/jrsssb/qkaf008/8058684
+
+
+tasks for 8/5:
+- write out algorithm, and show two approaches, second one uses information gain
+
+tasks for 8/3:
+- clarify what to do with explainer and algorithm to obtain explainer
+- maybe clean up math for shapley value a little bit
+
+
+tasks for 7/25:
+- Shapley value for hallucinations
+- simulation shapley value for different values of r
+- figure out from papers 
+- value function may not be known
+- prepare slides to talk about different algorithms
+for shapley value calculation
+- explain pros / cons of each
+- formulate general setting for multi modal
+
+tasks for 7/11:
+- finish r = 2
+- start r > 3
+- read recent literature
+- shapley value of covariates and interaction terms

@@ -1,0 +1,275 @@
+\documentclass[twoside,11pt]{article}
+
+% Any additional packages needed should be included after jmlr2e.
+% Note that jmlr2e.sty includes epsfig, amssymb, natbib and graphicx,
+% and defines many common macros, such as 'proof' and 'example'.
+%
+% It also sets the bibliographystyle to plainnat; for more information on
+% natbib citation styles, see the natbib documentation, a copy of which
+% is archived at http://www.jmlr.org/format/natbib.pdf
+
+% Available options for package jmlr2e are:
+%
+%   - abbrvbib : use abbrvnat for the bibliography style
+%   - nohyperref : do not load the hyperref package
+%   - preprint : remove JMLR specific information from the template,
+%         useful for example for posting to preprint servers.
+%
+% Example of using the package with custom options:
+%
+\usepackage{amsthm}
+\usepackage{caption}
+
+\usepackage[abbrvbib, preprint]{jmlr2e}
+
+\usepackage{enumitem}
+\setenumerate{topsep=3pt,parsep=1pt,itemsep=2pt}
+\usepackage{bm, mathdots, amsmath}          % math symbols and equations
+\usepackage[ruled, linesnumbered]{algorithm2e}      % algorithms
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}                               % professional-quality tables
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage{diagbox}
+\usepackage{colortbl}
+\usepackage{xcolor}  
+
+\usepackage{graphicx}  % 放在导言区
+\usepackage{bbm}
+\hypersetup{
+    colorlinks=true,
+    linkcolor = blue,
+    urlcolor  = blue,
+    citecolor=blue,
+    anchorcolor = blue
+}
+
+
+
+% Definitions of handy macros can go here
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}
+\newtheorem{asp}{Assumption}
+\newtheorem{ex}{Example}
+\newcommand{\change}[1]{{\leavevmode\color{red}{#1}}}
+
+
+\makeatletter
+\newcommand\runinsubsection{%
+    \@startsection{subsection}%
+        {2}%
+        {0em}%
+        {-1ex plus 0.1ex minus -0.05ex}%
+        {-1em plus 0.2em}%
+        {\normalfont\normalsize\bfseries}%
+    }
+\makeatother
+
+\newcommand{\lIfElse}[3]{\lIf{#1}{#2 \textbf{else}~#3}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Heading arguments are {volume}{year}{pages}{date submitted}{date published}{paper id}{author-full-names}
+
+\usepackage{lastpage}
+\jmlrheading{25}{2024}{1-\pageref{LastPage}}{}{}{}{... and ...}
+
+% Short headings should be running head and authors last names
+
+\ShortHeadings{Shapley Value for Multimodal Learning}{...}
+\firstpageno{1}
+
+\begin{document}
+
+\title{Shapley Value for Multimodal Learning}
+
+\author{}
+
+\editor{My editor}
+
+\maketitle
+
+\begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+\end{abstract}
+
+\begin{keywords}
+ 
+\end{keywords}
+
+
+
+\section{Introduction}
+\label{sec:intro}
+Multimodal machine learning refers to learning from data from more than one
+source or modality. It has proven to be useful in speech recognition using both
+visual and audio data \citep{yuhas1989integration}, generalist models drawing 
+from image, text, and other data \citep{reed2022generalist}, and LLMs that 
+incorporate many modalities \citep{achiam2023gpt}. \citet{lu2023theory} showed
+a theory suggesting that multimodal learning achieves a superior generalization bounds to unimodal learning.
+However, it may not be practical to utilize all available modalities for lack of computational resources.
+
+Selection of modalities requires attribution of prediction
+and uncertainty.
+\citet{shapley1951notes} introduced the Shapley value to attribute value to
+each player of a game, and \citet{lundberg2017unified} extended this to 
+machine learning to attribute information for a model's 
+prediction to each covariate in a model. \cite{he2024efficient} created a framework for modality selection which
+can use Shapley value. There has been relatively little exploration of attribution of uncertainty in a multimodal setting. A model-agnostic framework
+for attributing uncertainty to covariates using the Shapley
+value was introduced by \citet{watson2023explaining}. Our
+aim is to develop a similar approach for modalities.
+
+\subsection{Notation}
+Let $X$ and $Y$ be random variables in input space $\mathcal{X}$
+and outpus space $\mathcal{Y}$. In the multimodal setting,
+$\mathcal{X} = \mathcal{X}_1 \times ... \times \mathcal{X}_k$.
+We require an uncertainty estimator $h: \mathcal{X} \mapsto \mathbb{R}_{\geq 0}$
+
+
+
+
+
+\section{SS-ANOVA models study}
+\label{sec:ss-anova}
+
+% We consider a multimodal learning problem, where the aim is prediction
+% or classification using $p$ sources or modalities $M_j$ for $j \in \{1,...,p\}$.
+We consider a special case of multimodal learning proposed by \citet{dai2024nonparametric}. First, we let 
+$\{(\mathbf{t}_i^{(0)}, y_i^{(0)}):i=1,...,n\}$ be the function data
+that follow some regression model:
+$$Y^{(0)} = f_0(\mathbf{t}^{(0)})+\epsilon^{(0)},$$
+where $\epsilon^{(0)}$ is random error, $f_0:\mathcal{X}^d \mapsto \mathbb{R}$
+is a function of $d$ covariates $t = (t_1,...,t_2)$.
+
+Let $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ be the partial derivative of $f_0$ with respect to $t_j$.
+In this setting, the $j$th modality takes the form of $\{(\mathbf{t}_i^{(j)}, y_i^{(j)}):i=1,...,n\}$ for $j \in \{1,...,p\}$, where $p \in \{1,...,d\}$.
+Then these data (the partial derivatives) follow some regression model:
+$$Y^{(j)} = \frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j} + \epsilon^{(j)}$$
+
+We consider the case when $f_0$ is an SS-ANOVA model \citep{wahba1995smoothing}:
+$$f_0(t) = C +\sum_{j=1}^d f_{0j}(t_j)+...+\sum_{1\leq j_1<j_2<...<j_r\leq d} f_{0j_1, j_2...j_r}(t_{j_1},t_{j_2},...,t_{j_r}),$$
+where $C$ is a constant, $f_{0j}$ are main effects, $f_{0j_1j_2}$ are 
+two-way interactions, and so on to some order $r \in \{1, ...,d\}$ of interactions. 
+The partial derivatives of the SS-ANOVA model are as follows:
+$$\frac{\partial f_0(t)}{\partial t_k} = 
+\frac{\partial f_{0k}(t_k)}{\partial t_k} + ...+
+\underset{k \in (j_1,j_2,...,j_r)}{\underset{1\leq j_1<j_2<...<j_r\leq d}{\sum }}\frac{\partial f_{0j_1j_2...j_r}(t_{j1}, t_{j2}, ...,t_{jr})}{\partial t_k},$$
+Each component function resides in a certain reproducing kernel
+Hilbert space \citep{wahba1990spline}. Therefore, the SS-ANOVA model
+resides in the following space:
+$$\mathcal{H} = \{1\} \oplus \sum_{j=1}^d \mathcal{H}^j \oplus ... \oplus \sum_{1 \leq j_1 < j_2 < ... < j_r \leq d}[\mathcal{H}^{j_1} \otimes \mathcal{H}^j_2 \otimes ... \otimes \mathcal{H}^{j_r}]$$
+From Equation 15 of \citet{dai2024nonparametric}, 
+the minimax optimal rate for estimating $f_0 \in \mathcal{H}$ is given as:
+\[
+[n(\log n)^{1-(d-p) \land r}]^{-\frac{2m}{2m+1}}\mathbbm{1}_{0\leq p <d}+[n^{\frac{-2mr}{(2m+1)r-2}}\mathbbm{1}_{r \geq 3}+n^{-1}(\log n)^{r-1}\mathbbm{1}_{r<3}]\mathbbm{1}_{p=d}.
+\]
+
+Note that we assume each source has the same dimensionality (set of covariates) and sample size.
+
+
+
+
+
+\subsection{Generalized SS-ANOVA models}
+\label{subsec:generalized}
+
+
+
+
+
+In this setting, we can examine the Shapley values
+for partial derivatives treating the inverse of the minimax optimal
+rate as the value. Let $F := \{1,...,d\}$ be
+the set of indices for the modalities that we can choose to use. We also note that $d$ may be less than the full number
+of covariates available, so we can say that $D :=\{1,...,d^*\}$
+is the set of indices for the covariates we can choose to use, where $d^*$
+is the total number of covariates available. Then, in this
+generalized setting, $F$ is simply a subset of $D$. Lastly, given the number of covariates, we can choose the order of interactions $r$. Then, for some
+set $F \subseteq D$, $d = |F|$, $S \subseteq F$, and $r \in \{1,...,d\}$, 
+the value function for coalition $x_S$ is as follows:
+$$v(x_S)=[n(\log n)^{1-(d-|S|) \land r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{0\leq |S| <d}+[n^{\frac{2mr}{(2m+1)r-2}}\mathbbm{1}_{r \geq 3}+n(\log n)^{1-r}\mathbbm{1}_{r<3}]\mathbbm{1}_{|S|=d}.$$
+
+\begin{dfn}
+We define the Shapley value for modalities as
+\[
+\phi_j = \sum_{S \subseteq F \setminus \{j\}} \frac{|S|! \, (|F| - |S| - 1)!}{|F|!} \left[ v(x_{S \cup \{j\}}) - v(x_S) \right]
+\]
+\end{dfn}
+
+We observe that in this study, the specific choice of $S$
+does not matter as much as its size.
+
+% Probably not use subsubsections in final draft, just placeholder for now
+\subsubsection{Case 1: $r < 3$}
+In this case the value function can be reduced to
+$$v(x_S) =  [n (\log n)^{1-r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{d - |S| > 1} + n^{\frac{2m}{2m+1}} \mathbbm{1}_{d - |S| = 1} +n (\log n)^{1-r} \mathbbm{1}_{|S|=d}.$$
+Because we are only concerned with the size of $S$, we can identify two coalition sizes in which adding an additional
+modality to set $S$ offers an improvement in the value function.
+\begin{enumerate}
+    \item $|S| = d - 2$ ($|S \cup \{j\}| = d - 1$)
+    \item $|S| = d - 1$ ($|S \cup \{j\}| = d$)
+\end{enumerate}
+For 1, there are ${{d-1}\choose {d - 2}} = d-1$ such coalitions
+for each $j$. For 2, there is only one such coalitions for each $j$. 
+For the share of total coalitions matching the size of 1, a partial derivative $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ has an additional value of
+$$(d-1)\frac{(d-2)!(d-(d-2)-1)!}{d!}[n^{\frac{2m}{2m+1}}-[n (\log n)^{1-r}]^{\frac{2m}{2m+1}}] = \frac{1}{d}[n^{\frac{2m}{2m+1}}-[n (\log n)^{1-r}]^{\frac{2m}{2m+1}}].$$
+For the share of coalitions matching the size of 2, a partial derivative 
+$\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ has an additional value
+of
+$$\frac{(d-1)!(d-(d-1)-1)!}{d!}[n(\log n)^{1-r}-n^{\frac{2m}{2m+1}}] = \frac{1}{d}[n(\log n)^{1-r}-n^{\frac{2m}{2m+1}}].$$
+Then the Shapley value of $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ is the sum of these weighted values:
+$$\phi_j = \frac{1}{d}[n(\log n)^{1-r} -[n(\log n)^{1-r}]^{\frac{2m}{2m+1}}]$$.
+
+\subsubsection{Case 2: $r  \geq 3$}
+The value function can be reduced to
+$$v(x_S) =  [n (\log n)^{1-r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{d - |S| \geq r} + [n (\log n)^{1-(d-|S|)}]^{\frac{2m}{2m+1}} \mathbbm{1}_{0 < d - |S| < r} +n^{\frac{2mr}{(2m+1)r-2}} \mathbbm{1}_{|S|=d}$$
+For $k \in \{1, ..., r\}$,
+$|S| = d - k$ can be 
+improved on by $|S \cup \{j\}| = d - k + 1$.
+For $|S| = d - k$, there are ${{d-1}\choose {d - k}} = \frac{(d-1)!}{(d-k)!(k-1)!}$ such coalitions for each $j$. 
+For the coalitions for which $|S| = d - 1$, a
+partial derivative has an additional value of
+$$\frac{1}{d}[n^\frac{2mr}{(2m+1)r-2}-n^\frac{2m}{2m+1}].$$
+If $k \in\{2,...,r\}$, a partial derivative has an additional value of
+$$\frac{(d-1)!}{(d-k)!(k-1)!}\frac{(d-k)!(d-(d-k)-1)!}{d!}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]$$ $$= \frac{1}{d}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]$$
+Then the Shapley value is the sum of
+these weighted values:
+$$\phi_j = \frac{1}{d}[n^\frac{2mr}{(2m+1)r-2}-n^\frac{2m}{2m+1}]+\sum_{k=2}^{r}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]]$$
+When we cancel out most of these terms,
+we get:
+$$\phi_j = \frac{1}{d}[n^\frac{2mr}{(2m+1)r-2} - [n (\log n)^{1-r)}]^{\frac{2m}{2m+1}}]$$
+
+Then the generalized form for the Shapley value
+of a modality
+is 
+\[\phi_j = \frac{1}{d} \begin{cases} 
+      [n(\log n)^{1-r} -[n(\log n)^{1-r}]^{\frac{2m}{2m+1}}] & r < 3 \\
+      [n^\frac{2mr}{(2m+1)r-2} - [n (\log n)^{1-r)}]^{\frac{2m}{2m+1}}] & r \geq 3
+   \end{cases}
+\]
+
+\section{An Approach for Uncertainty Quantification}
+\label{subec:uncertainty}
+
+Uncertainty estimator 
+
+\newpage
+
+\appendix
+\section{Proofs}\label{app:proofs}
+\subsection{Proof of ....}
+\begin{proof}
+Consider 
+\end{proof}
+
+\bibliography{main}
+\bibliographystyle{chicago}
+
+\end{document}
