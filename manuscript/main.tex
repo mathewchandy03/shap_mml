@@ -36,7 +36,8 @@
 \usepackage{diagbox}
 \usepackage{colortbl}
 \usepackage{xcolor}  
-
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{graphicx}  % 放在导言区
 \usepackage{bbm}
 \hypersetup{
@@ -255,19 +256,94 @@ is
    \end{cases}
 \]
 
-\section{An Approach for Uncertainty Quantification}
-\label{subec:uncertainty}
+\section{Split Conformal Approach for Shapley Values of
+Modalities}
+\label{subec:split}
 
-Uncertainty estimator 
+We use similar notation to that
+in \citet{he2024efficient},
+who introduced an approach for
+modality selection, but did
+not account for uncertainty of
+Shapley values.
+Define random variables 
+$X \in \mathcal{X} = \mathcal{X}_1 \times \cdots \times \mathcal{X}_p$ for $p$
+modalities and $Y \in \mathcal{Y} \subseteq \mathbb R$ with values $x$ and $y$,
+respectively. Let $X_j \in \mathcal{X}_j \subseteq \mathbb{R}^{d_j}$ for
+$j \in [p] = \{1,...,p\}$,
+and let $V = \{X_1,...,X_p\}$,
+which takes values $v = \{x_1,...,x_p\}$. Define a subset of observed modality data $v_S = \{x_j\}_{j\in S}$
+such that $S \subseteq [p]$.
+Assuming that each modality has the same sample size $n$,
+we have observations $v^{(i)}=\{x_1^{(i)},...,x_p^{(i)}\}$
+for $i \in \{1,...,n\}$. 
+\begin{algorithm}
+    \begin{algorithmic}
+    \caption{Split Conformal Approach for Shapley Values
+    of Modalities}\label{alg:split}
+        \Require Data $(v^{(i)}, y^{(i)}), i=1,...,n$, miscoverage level $\alpha \in (0,1)$, regression algorithm $\mathcal{A}$, value function $\text{val}(S,v,\mu)$ with some model
+        prediction $\mu$
+        \Ensure Prediction band for Shapley values,
+        over $j \in [p]$
+        \State Randomly split $\{1,...,n\}$ into two equal sized subsets $\mathcal{I}_1, \mathcal{I}_2$
+        \State $\hat \mu =\mathcal{A}(\{(v^{(i)},y^{(i)}):i\in \mathcal{I}_1\})$
+        \State $\phi_{i,j} = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}[\text{val}(S \cup j,v^{(i)},\hat \mu) - \text{val}(S, v^{(i)}, \hat \mu)]$, $i \in \mathcal{I}_2$, $j \in [p]$
+        \State $\ell = \lceil (n/2 + 1) (\alpha / 2) \rceil$
+        \State $u = \lceil (n/2 + 1) ( 1 - \alpha / 2) \rceil$ 
+        \State $C_\text{split}(j) = [\phi_{(\ell),j},\phi_{(u),j}]$, for all 
+        $j \in [p]$, where $\phi_{(i),j}$ is the $i$th smallest value of $\phi_{i,j}, i \in \mathcal{I}_2$
+        
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{thm}
+\label{thm:validity}
+    If $(V_i,Y_i),i=1,...,n$ are i.i.d, then for a new i.i.d. draw $(V_{n+1}, Y_{n+1})$ with values
+    $\phi_{n+1,j}$, $j \in[d]$.
+    $$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) \geq 1 - \alpha$$
+    for the split conformal prediction band $C_\text{split}$ constructed in
+    Algorithm~\ref{alg:split}. Additionally, if we assume that the Shapley 
+    values $\phi_{i,j}, i \in \mathcal{I}_2$ have a continuous joint
+    distribution for each $j$, then
+    $$\mathbb P(\phi_{n+1},j\in C_\text{split}(j)) \leq 1 - \alpha + \frac{2}{n+2}$$
+\end{thm}
+
 
 \newpage
 
 \appendix
 \section{Proofs}\label{app:proofs}
-\subsection{Proof of ....}
-\begin{proof}
-Consider 
+
+\begin{proof}[Proof of Theorem~\ref{thm:validity}]
+Because $\phi_{n+1,j} \in C_\text{split}(j) \iff \phi_{(\ell),j} \leq \phi_{n+1} \leq \phi_{(u),j}$,
+$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 
+\mathbb P(\phi_{(\ell),j} \leq \phi_{n+1,j} \leq \phi_{(u), j}).$
+By exchangeability of $\phi_{n+1,j}$ and $\phi_{i,j}, i \in \mathcal{I}_2$, which we re-index from $1$ to $m = n/2$,
+the rank of $\phi_{n+1,j}$ among $\phi_1,...,\phi_m,\phi_{n+1}$ is
+uniformly distributed over the set $\{1,...,m+1\}$. Therefore,
+\begin{align*}
+\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) &= 
+\mathbb P(\phi_{n+1,j} \leq \phi_{(u), j}) - \mathbb P(\phi_{n+1,j} < \phi_{(\ell), j}) \\
+&= \frac{u}{m+1} - \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1}\\
+&= \frac{\lceil (m+1)(1-\alpha/2)\rceil - \lfloor(m+1)(\alpha/2)\rfloor}{m+1} \\
+&\geq 1- \alpha.
+\end{align*}
+We define $D(j)$ such that 
+$\phi_{n+1,j} \in D(j) \iff \phi_{n+1,j} < \phi_{(\ell),j}$ or 
+$\phi_{n+1,j} > \phi_{(u),j}$. Therefore,
+\begin{align*}
+    \mathbb P(\phi_{n+1,j} \in D(j)) &= \mathbb P(\phi_{n+1,j} < \phi_{(\ell),j}) + \mathbb P(\phi_{n+1,j} >\phi_{(u),j}) \\
+    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1} + \frac{m-u}{m+1} \\
+    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor +m-\lceil (m+1)(1-\alpha/2)\rceil}{m+1} \\
+    &\leq \frac{(m+1)(\alpha/2)+(m+1)(\alpha/2)-1}{m+1}\\
+    &=\alpha-\frac{1}{n/2+1} = \alpha - \frac{2}{n+2}.
+\end{align*}
+And because $\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 1- \mathbb P(\phi_{n+1,j} \in D(j))$,
+$$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 1 - \alpha + \frac{2}{n+2}.$$
+
 \end{proof}
+
+
 
 \bibliography{main}
 \bibliographystyle{chicago}
