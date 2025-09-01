@@ -296,6 +296,11 @@ for $i \in \{1,...,n\}$.
     \end{algorithmic}
 \end{algorithm}
 
+This approach is similar to that of \citet{watson2023explaining}, which
+itself is based off the split conformal inference approach introduced
+by \citet{lei2018distribution}, but 
+adapted to a multimodal learning setting. 
+
 \begin{thm}
 \label{thm:validity}
     If $(V_i,Y_i),i=1,...,n$ are i.i.d, then for a new i.i.d. draw $(V_{n+1}, Y_{n+1})$ with values
@@ -308,6 +313,10 @@ for $i \in \{1,...,n\}$.
     $$\mathbb P(\phi_{n+1},j\in C_\text{split}(j)) \leq 1 - \alpha + \frac{2}{n+2}$$
 \end{thm}
 
+\section{Simulation Study}
+
+We applied Algorithm~\ref{alg:split} to the regression synthetic dataset from \citet{he2024efficient} using miscoverage level $\alpha = 0.2$, ordinary linear regression for $\mathcal{A}$,
+and squared error loss for $\text{val}(S,v,\mu)$.
 
 \newpage
 
