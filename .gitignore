@@ -29,6 +29,9 @@ manuscript/main_files
 # code
 code/*/*
 
+# data
+data/ADNI.csv
+
 # Rnw
 */Rnw/cache
 
