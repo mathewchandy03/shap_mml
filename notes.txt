@@ -1,3 +1,111 @@
+tasks 12/31:
+- figures adjust, new figures, diagram
+- shapley value literature multimodal literature
+- 
+
+tasks 12/20:
+- see if proof can include q <=
+
+tasks 12/16:
+- Try conformal p-values
+- implement cv
+- take into account how much observed shapley value deviates from mean
+shapley value
+- implement mnist
+
+tasks 12/9:
+- Cascade model (Lancet)
+- MRI is most important, then tau, then amyloid beta
+- All terms should be significant, p-value from conditional
+conformal
+
+tasks for 12/2:
+- alzheimer's
+- make clear differences
+- Get draft done by the new year
+
+tasks for 11/24:
+- try gemini to achieve concentration inequalities
+-claude
+
+
+tasks for 11/11:
+- Prove something about model selection a la jmlr paper
+- work on conformal propositions
+- try to improve simulation speed
+
+tasks for 11/4:
+- Verify that Shapley bounds seem realistic
+- Try dimensional reduction (PCA)
+- Lay out theorems I can prove
+
+tasks for 10/28:
+- Look at code from gibbs
+- Try conditional conformal with full modality to see if its feasible
+- Theorem 3 from gibbs
+- For conditional start lower
+- Focus on conditional for paper
+
+questions for 10/21:
+- clarifications on big picture
+- now if i want to make guarantees on model selection, that is
+the modalities chosen, other theory is required
+
+
+
+tasks for 10/7:
+- proof for 3.1
+- write down full algorithm
+- think of possible guarantees based on proof
+- use icml template
+- prediction via shapley regression
+- 1. Outline
+- 2. Preliminaries (shapley, conformal, multimodal)
+- 3. Method with Diagram with Algorithm (bioRender)
+- 3.5. Application to Partial Derivative
+- 4. Empirical Results (Ablation Study optional)
+- 5. Related Work
+- 6. Concluding Remarks
+- 16 and 25
+
+tasks for 9/30:
+- once have access, run code (be careful)
+- understand paper thoroughly
+
+tasks for 9/19:
+- add description of simulation studies
+- try with 49 patches
+- look for code
+- relationship between selected subset and optimal subset
+- guarantee for conformal inference: is it conditional
+on the selected modalities?
+- vs marginal guarantee
+- population of modalities 
+
+tasks for 9/10:
+- look at theoretical guarantees for he
+- try to approach these probability bound problems
+
+tasks for 9/9:
+- summarize simualtion results and difference between he paper,
+highlight guarantee that we have that jmlr paper doesn't have
+- work on patch-mnist
+- theoretical guarantees: conformal 95% coverage guarantee, what
+does that say about the model selection
+- guarantee about selection or prediction
+
+
+tasks for 8/27:
+- reproduce figures from he, perhaps with error bounds
+- refit mu for each coalition
+- do in Python
+
+questions for 8/27:
+- Should I work on trying to figure it out beyond exchangeability
+- Trying to show it for Patch-MNIST
+- Convert to Python
+
+
 tasks for 8/27:
 - rigorous proof for basic split conformal with shapley value
 - read conformal prediction beyond exchangeability

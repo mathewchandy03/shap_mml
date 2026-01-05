@@ -1,360 +1,905 @@
-\documentclass[twoside,11pt]{article}
+%%%%%%%% ICML 2025 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
 
-% Any additional packages needed should be included after jmlr2e.
-% Note that jmlr2e.sty includes epsfig, amssymb, natbib and graphicx,
-% and defines many common macros, such as 'proof' and 'example'.
-%
-% It also sets the bibliographystyle to plainnat; for more information on
-% natbib citation styles, see the natbib documentation, a copy of which
-% is archived at http://www.jmlr.org/format/natbib.pdf
+\documentclass{article}
 
-% Available options for package jmlr2e are:
-%
-%   - abbrvbib : use abbrvnat for the bibliography style
-%   - nohyperref : do not load the hyperref package
-%   - preprint : remove JMLR specific information from the template,
-%         useful for example for posting to preprint servers.
-%
-% Example of using the package with custom options:
-%
-\usepackage{amsthm}
-\usepackage{caption}
-
-\usepackage[abbrvbib, preprint]{jmlr2e}
-
-\usepackage{enumitem}
-\setenumerate{topsep=3pt,parsep=1pt,itemsep=2pt}
-\usepackage{bm, mathdots, amsmath}          % math symbols and equations
-\usepackage[ruled, linesnumbered]{algorithm2e}      % algorithms
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
 \usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{booktabs}                               % professional-quality tables
-\usepackage{multirow}
-\usepackage{array}
-\usepackage{siunitx}
-\usepackage{diagbox}
-\usepackage{colortbl}
-\usepackage{xcolor}  
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{graphicx}  % 放在导言区
-\usepackage{bbm}
-\hypersetup{
-    colorlinks=true,
-    linkcolor = blue,
-    urlcolor  = blue,
-    citecolor=blue,
-    anchorcolor = blue
-}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2025} with \usepackage[nohyperref]{icml2025} above.
+\usepackage{hyperref}
 
 
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage{algpseudocode} % for \EndFor and other pseudocode commands
 
-% Definitions of handy macros can go here
-\newtheorem{prop}{Proposition}
-\newtheorem{thm}{Theorem}
-\newtheorem{lem}{Lemma}
+% Use the following line for the initial blind version submitted for review:
+\usepackage{icml2025}
 
+% If accepted, instead use the following line for the camera-ready submission:
+% \usepackage[accepted]{icml2025}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
-\newtheorem{dfn}{Definition}
-\newtheorem{asp}{Assumption}
-\newtheorem{ex}{Example}
-\newcommand{\change}[1]{{\leavevmode\color{red}{#1}}}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
 
 
-\makeatletter
-\newcommand\runinsubsection{%
-    \@startsection{subsection}%
-        {2}%
-        {0em}%
-        {-1ex plus 0.1ex minus -0.05ex}%
-        {-1em plus 0.2em}%
-        {\normalfont\normalsize\bfseries}%
-    }
-\makeatother
-
-\newcommand{\lIfElse}[3]{\lIf{#1}{#2 \textbf{else}~#3}}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
-
-% Heading arguments are {volume}{year}{pages}{date submitted}{date published}{paper id}{author-full-names}
-
-\usepackage{lastpage}
-\jmlrheading{25}{2024}{1-\pageref{LastPage}}{}{}{}{... and ...}
-
-% Short headings should be running head and authors last names
-
-\ShortHeadings{Shapley Value for Multimodal Learning}{...}
-\firstpageno{1}
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Shapley Value Modality Selection with
+Conditional Optimality Guarantee}
 
 \begin{document}
 
-\title{Shapley Value for Multimodal Learning}
+\twocolumn[
+\icmltitle{Shapley Value-Based Modality Selection with
+Conditional Optimality Guarantee}
 
-\author{}
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2025
+% package.
 
-\editor{My editor}
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
 
-\maketitle
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Mathew Chandy}{equal,yyy}
+\icmlauthor{Firstname2 Lastname2}{equal,yyy,comp}
+\icmlauthor{Firstname3 Lastname3}{comp}
+\icmlauthor{Firstname4 Lastname4}{sch}
+\icmlauthor{Firstname5 Lastname5}{yyy}
+\icmlauthor{sd }{sch,yyy,comp}
+\icmlauthor{Hua Zhou}{comp}
+%\icmlauthor{}{sch}
+\icmlauthor{Jin Zhou}{sch}
+\icmlauthor{Xiaowu Dai}{yyy,comp}
+%\icmlauthor{}{sch}
+%\icmlauthor{}{sch}
+\end{icmlauthorlist}
+
+\icmlaffiliation{yyy}{Department of XXX, University of YYY, Location, Country}
+\icmlaffiliation{comp}{Company Name, Location, Country}
+\icmlaffiliation{sch}{School of ZZZ, Institute of WWW, Location, Country}
+
+\icmlcorrespondingauthor{Firstname1 Lastname1}{first1.last1@xxx.edu}
+\icmlcorrespondingauthor{Firstname2 Lastname2}{first2.last2@www.uk}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+\printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+
+
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+In machine learning, we can use multiple modalities or sources of data. Modality interpretation with importance scores is paramount, but it is also necessary to be able to quantify our
+uncertainty in these scores.
+In this study, we combine Shapley values with marginal and conditional conformal inference to construct uncertainty-aware modality importance intervals.. Additionally, we offer a modality selection algorithm with a conditional
+near-optimality guarantee. Finally, we
+demonstrate an application of these techniques
+in the context of regression, classification,
+and Alzheimer's data. We provide code used in our analysis: \href{https://github.com/mathewchandy03/shap_mml}{https://github.com/mathewchandy03/shap\_mml}.
 \end{abstract}
 
-\begin{keywords}
+% \begin{keywords}
  
-\end{keywords}
+% \end{keywords}
 
 
 
 \section{Introduction}
 \label{sec:intro}
-Multimodal machine learning refers to learning from data from more than one
-source or modality. It has proven to be useful in speech recognition using both
+
+Multimodal machine learning refers to machine learning where covariates from more than one
+data source or modality are used. It has proven to be useful in speech recognition using both
 visual and audio data \citep{yuhas1989integration}, generalist models drawing 
 from image, text, and other data \citep{reed2022generalist}, and LLMs that 
 incorporate many modalities \citep{achiam2023gpt}. \citet{lu2023theory} showed
 a theory suggesting that multimodal learning achieves a superior generalization bounds to unimodal learning.
-However, it may not be practical to utilize all available modalities for lack of computational resources.
+However, it may not always be practical to utilize all available modalities for lack of computational resources. Therefore, we must be selective
+about the modalities we use in prediction, and it is of great interest to obtain attributions of importance to each modality.
 
-Selection of modalities requires attribution of prediction
-and uncertainty.
-\citet{shapley1951notes} introduced the Shapley value to attribute value to
-each player of a game, and \citet{lundberg2017unified} extended this to 
-machine learning to attribute information for a model's 
-prediction to each covariate in a model. \cite{he2024efficient} created a framework for modality selection which
-can use Shapley value. There has been relatively little exploration of attribution of uncertainty in a multimodal setting. A model-agnostic framework
-for attributing uncertainty to covariates using the Shapley
-value was introduced by \citet{watson2023explaining}. Our
-aim is to develop a similar approach for modalities.
+One popular choice for feature importance scores is the Shapley value which was introduced by \citet{shapley1951notes} to attribute value to
+each player of some game. \citet{lundberg2017unified} applied this framework to 
+a machine learning setting to attribute information for a model's 
+prediction to each covariate in a model. In a similar manner, \cite{he2024efficient} applied Shapley values to a
+multimodal machine learning setting to attribute a model's prediction loss to each modality in a model. We are
+always interested in quantifying uncertainty regarding an inference we make. The same applies to inferences of value attribution. A useful method for uncertainty quantification in machine learning is conformal or split conformal inference
+\citet{lei2018distribution}, which is typically used to
+create valid prediction sets.
+A method which applies conformal inference as a way to quantify uncertainty of covariate Shapley
+values was introduced by \citet{watson2023explaining}, but
+this has not yet been shown for modality Shapley values. In
+this paper, we demonstrate that a similar approach can work for modalities with
+additional inferences on global importance.
 
-\subsection{Notation}
-Let $X$ and $Y$ be random variables in input space $\mathcal{X}$
-and outpus space $\mathcal{Y}$. In the multimodal setting,
-$\mathcal{X} = \mathcal{X}_1 \times ... \times \mathcal{X}_k$.
-We require an uncertainty estimator $h: \mathcal{X} \mapsto \mathbb{R}_{\geq 0}$
+Lastly, we
+provide importance scores leading to a modality selection procedure with a near-optimality guarantee conditional on the observed data. This utilizes the tools from
+conditional conformal inference \citep{gibbs2025conformal} within the
+context of model selection instead of prediction set construction. Building on \citet{he2024efficient}'s method, our method accounts for uncertainty and allows model selection tailored to the observed value of the predictors. We also demonstrate an application
+on an Alzheimer's dataset (ADNI) which has not yet
+been shown in a multimodal machine learning paper.
+In Section~\ref{sec:preliminaries}, we review the three
+methodological tools which this study unites: in Subsection~\ref{subsec:shapley} we define the Shapley value, in Subsection~\ref{subsec:multimodal}, we set up a general multimodal learning problem and in Subsection~\ref{subsec:conformal}, we discuss conformal inference and its conditional variant. In Section~\ref{sec:method},
+we describe our methodological developments and highlight our theoretical
+guarantees. In Section~\ref{sec:empirical}, we
+show results from regression (Subsection \ref{subsec:reg}) on synthetic data  and classification (Subsection \ref{subsec:class}) on MNIST \citep{lecun2010mnist}, as well as an application on the ADNI dataset
+using tree-based methods (Subsection \ref{subsec:adni}).
+In Section~\ref{sec:related}, we discuss related works,
+and we conclude with Section~\ref{sec:concluding}.
 
+\section{Preliminaries}
+\label{sec:preliminaries}
 
+In order to understand our new method, which connects ideas
+from game theory, machine learning, and statistics, it is
+necessary to understand the pieces that make it up.
 
+\subsection{Shapley Value}
+\label{subsec:shapley}
 
+We first define the Shapley value and offer an intuition behind it.
+First we imagine some game (the specific one of most interest to us is machine learning), but for the sake of understanding,
+we will generalize to all games. The game has players $j \in \{1,...,p\}$. We define a coalition $S$ of players as a subset of $[p]= \{1,...,p\}$. The object of the game 
+is to optimize some value function $\text {val}(S)$
+which is a numeric score function of the coalition. Then, for $j \in [p]$,
+we define the Shapley value of player $j$ as
+$$\phi_j = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}[\text{val}(S \cup j) - \text{val}(S)]$$
+Player $j$'s Shapley value measures the average contribution of
+player $j$ to a coalition which does not include player $j$.
+Note that $\frac{|S|!(p-|S|-1)!}{p!}$ is a weighting term
+based on the probability of player $j$ being added to
+coalition $S$.
 
-\section{SS-ANOVA models study}
-\label{sec:ss-anova}
+\subsection{Multimodal Machine Learning}
+\label{subsec:multimodal}
 
-% We consider a multimodal learning problem, where the aim is prediction
-% or classification using $p$ sources or modalities $M_j$ for $j \in \{1,...,p\}$.
-We consider a special case of multimodal learning proposed by \citet{dai2024nonparametric}. First, we let 
-$\{(\mathbf{t}_i^{(0)}, y_i^{(0)}):i=1,...,n\}$ be the function data
-that follow some regression model:
-$$Y^{(0)} = f_0(\mathbf{t}^{(0)})+\epsilon^{(0)},$$
-where $\epsilon^{(0)}$ is random error, $f_0:\mathcal{X}^d \mapsto \mathbb{R}$
-is a function of $d$ covariates $t = (t_1,...,t_2)$.
-
-Let $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ be the partial derivative of $f_0$ with respect to $t_j$.
-In this setting, the $j$th modality takes the form of $\{(\mathbf{t}_i^{(j)}, y_i^{(j)}):i=1,...,n\}$ for $j \in \{1,...,p\}$, where $p \in \{1,...,d\}$.
-Then these data (the partial derivatives) follow some regression model:
-$$Y^{(j)} = \frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j} + \epsilon^{(j)}$$
-
-We consider the case when $f_0$ is an SS-ANOVA model \citep{wahba1995smoothing}:
-$$f_0(t) = C +\sum_{j=1}^d f_{0j}(t_j)+...+\sum_{1\leq j_1<j_2<...<j_r\leq d} f_{0j_1, j_2...j_r}(t_{j_1},t_{j_2},...,t_{j_r}),$$
-where $C$ is a constant, $f_{0j}$ are main effects, $f_{0j_1j_2}$ are 
-two-way interactions, and so on to some order $r \in \{1, ...,d\}$ of interactions. 
-The partial derivatives of the SS-ANOVA model are as follows:
-$$\frac{\partial f_0(t)}{\partial t_k} = 
-\frac{\partial f_{0k}(t_k)}{\partial t_k} + ...+
-\underset{k \in (j_1,j_2,...,j_r)}{\underset{1\leq j_1<j_2<...<j_r\leq d}{\sum }}\frac{\partial f_{0j_1j_2...j_r}(t_{j1}, t_{j2}, ...,t_{jr})}{\partial t_k},$$
-Each component function resides in a certain reproducing kernel
-Hilbert space \citep{wahba1990spline}. Therefore, the SS-ANOVA model
-resides in the following space:
-$$\mathcal{H} = \{1\} \oplus \sum_{j=1}^d \mathcal{H}^j \oplus ... \oplus \sum_{1 \leq j_1 < j_2 < ... < j_r \leq d}[\mathcal{H}^{j_1} \otimes \mathcal{H}^j_2 \otimes ... \otimes \mathcal{H}^{j_r}]$$
-From Equation 15 of \citet{dai2024nonparametric}, 
-the minimax optimal rate for estimating $f_0 \in \mathcal{H}$ is given as:
-\[
-[n(\log n)^{1-(d-p) \land r}]^{-\frac{2m}{2m+1}}\mathbbm{1}_{0\leq p <d}+[n^{\frac{-2mr}{(2m+1)r-2}}\mathbbm{1}_{r \geq 3}+n^{-1}(\log n)^{r-1}\mathbbm{1}_{r<3}]\mathbbm{1}_{p=d}.
-\]
-
-Note that we assume each source has the same dimensionality (set of covariates) and sample size.
-
-
-
-
-
-\subsection{Generalized SS-ANOVA models}
-\label{subsec:generalized}
-
-
-
-
-
-In this setting, we can examine the Shapley values
-for partial derivatives treating the inverse of the minimax optimal
-rate as the value. Let $F := \{1,...,d\}$ be
-the set of indices for the modalities that we can choose to use. We also note that $d$ may be less than the full number
-of covariates available, so we can say that $D :=\{1,...,d^*\}$
-is the set of indices for the covariates we can choose to use, where $d^*$
-is the total number of covariates available. Then, in this
-generalized setting, $F$ is simply a subset of $D$. Lastly, given the number of covariates, we can choose the order of interactions $r$. Then, for some
-set $F \subseteq D$, $d = |F|$, $S \subseteq F$, and $r \in \{1,...,d\}$, 
-the value function for coalition $x_S$ is as follows:
-$$v(x_S)=[n(\log n)^{1-(d-|S|) \land r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{0\leq |S| <d}+[n^{\frac{2mr}{(2m+1)r-2}}\mathbbm{1}_{r \geq 3}+n(\log n)^{1-r}\mathbbm{1}_{r<3}]\mathbbm{1}_{|S|=d}.$$
-
-\begin{dfn}
-We define the Shapley value for modalities as
-\[
-\phi_j = \sum_{S \subseteq F \setminus \{j\}} \frac{|S|! \, (|F| - |S| - 1)!}{|F|!} \left[ v(x_{S \cup \{j\}}) - v(x_S) \right]
-\]
-\end{dfn}
-
-We observe that in this study, the specific choice of $S$
-does not matter as much as its size.
-
-% Probably not use subsubsections in final draft, just placeholder for now
-\subsubsection{Case 1: $r < 3$}
-In this case the value function can be reduced to
-$$v(x_S) =  [n (\log n)^{1-r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{d - |S| > 1} + n^{\frac{2m}{2m+1}} \mathbbm{1}_{d - |S| = 1} +n (\log n)^{1-r} \mathbbm{1}_{|S|=d}.$$
-Because we are only concerned with the size of $S$, we can identify two coalition sizes in which adding an additional
-modality to set $S$ offers an improvement in the value function.
-\begin{enumerate}
-    \item $|S| = d - 2$ ($|S \cup \{j\}| = d - 1$)
-    \item $|S| = d - 1$ ($|S \cup \{j\}| = d$)
-\end{enumerate}
-For 1, there are ${{d-1}\choose {d - 2}} = d-1$ such coalitions
-for each $j$. For 2, there is only one such coalitions for each $j$. 
-For the share of total coalitions matching the size of 1, a partial derivative $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ has an additional value of
-$$(d-1)\frac{(d-2)!(d-(d-2)-1)!}{d!}[n^{\frac{2m}{2m+1}}-[n (\log n)^{1-r}]^{\frac{2m}{2m+1}}] = \frac{1}{d}[n^{\frac{2m}{2m+1}}-[n (\log n)^{1-r}]^{\frac{2m}{2m+1}}].$$
-For the share of coalitions matching the size of 2, a partial derivative 
-$\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ has an additional value
-of
-$$\frac{(d-1)!(d-(d-1)-1)!}{d!}[n(\log n)^{1-r}-n^{\frac{2m}{2m+1}}] = \frac{1}{d}[n(\log n)^{1-r}-n^{\frac{2m}{2m+1}}].$$
-Then the Shapley value of $\frac{\partial f_0(\mathbf{t}^{(j)})}{\partial t_j}$ is the sum of these weighted values:
-$$\phi_j = \frac{1}{d}[n(\log n)^{1-r} -[n(\log n)^{1-r}]^{\frac{2m}{2m+1}}]$$.
-
-\subsubsection{Case 2: $r  \geq 3$}
-The value function can be reduced to
-$$v(x_S) =  [n (\log n)^{1-r}]^{\frac{2m}{2m+1}}\mathbbm{1}_{d - |S| \geq r} + [n (\log n)^{1-(d-|S|)}]^{\frac{2m}{2m+1}} \mathbbm{1}_{0 < d - |S| < r} +n^{\frac{2mr}{(2m+1)r-2}} \mathbbm{1}_{|S|=d}$$
-For $k \in \{1, ..., r\}$,
-$|S| = d - k$ can be 
-improved on by $|S \cup \{j\}| = d - k + 1$.
-For $|S| = d - k$, there are ${{d-1}\choose {d - k}} = \frac{(d-1)!}{(d-k)!(k-1)!}$ such coalitions for each $j$. 
-For the coalitions for which $|S| = d - 1$, a
-partial derivative has an additional value of
-$$\frac{1}{d}[n^\frac{2mr}{(2m+1)r-2}-n^\frac{2m}{2m+1}].$$
-If $k \in\{2,...,r\}$, a partial derivative has an additional value of
-$$\frac{(d-1)!}{(d-k)!(k-1)!}\frac{(d-k)!(d-(d-k)-1)!}{d!}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]$$ $$= \frac{1}{d}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]$$
-Then the Shapley value is the sum of
-these weighted values:
-$$\phi_j = \frac{1}{d}[n^\frac{2mr}{(2m+1)r-2}-n^\frac{2m}{2m+1}]+\sum_{k=2}^{r}[[n (\log n)^{2-k)}]^{\frac{2m}{2m+1}} - [n (\log n)^{1-k)}]^{\frac{2m}{2m+1}}]]$$
-When we cancel out most of these terms,
-we get:
-$$\phi_j = \frac{1}{d}[n^\frac{2mr}{(2m+1)r-2} - [n (\log n)^{1-r)}]^{\frac{2m}{2m+1}}]$$
-
-Then the generalized form for the Shapley value
-of a modality
-is 
-\[\phi_j = \frac{1}{d} \begin{cases} 
-      [n(\log n)^{1-r} -[n(\log n)^{1-r}]^{\frac{2m}{2m+1}}] & r < 3 \\
-      [n^\frac{2mr}{(2m+1)r-2} - [n (\log n)^{1-r)}]^{\frac{2m}{2m+1}}] & r \geq 3
-   \end{cases}
-\]
-
-\section{Split Conformal Approach for Shapley Values of
-Modalities}
-\label{subec:split}
-
-We use similar notation to that
+Now let's delineate a generalized multimodal machine learning
+setting. We use similar notation to that
 in \citet{he2024efficient},
 who introduced an approach for
 modality selection, but did
-not account for uncertainty of
-Shapley values.
+not account for the uncertainty of
+Shapley values. The notation is analogous to the Shapley value setting, as our model considers each modality (or data source)
+to be a player. 
 Define random variables 
 $X \in \mathcal{X} = \mathcal{X}_1 \times \cdots \times \mathcal{X}_p$ for $p$
-modalities and $Y \in \mathcal{Y} \subseteq \mathbb R$ with values $x$ and $y$,
-respectively. Let $X_j \in \mathcal{X}_j \subseteq \mathbb{R}^{d_j}$ for
+modalities and $Y \in \mathcal{Y} \subseteq \mathbb R$ with instantiations $x$ and $y$,
+respectively. Let $X_j \in \mathcal{X}_j$ for
 $j \in [p] = \{1,...,p\}$,
 and let $V = \{X_1,...,X_p\}$,
-which takes values $v = \{x_1,...,x_p\}$. Define a subset of observed modality data $v_S = \{x_j\}_{j\in S}$
+which takes instantiation $v = \{x_1,...,x_p\}$. Define a subset of observed modality data $v_S = \{x_j\}_{j\in S}$
 such that $S \subseteq [p]$.
 Assuming that each modality has the same sample size $n$,
-we have observations $v^{(i)}=\{x_1^{(i)},...,x_p^{(i)}\}$
-for $i \in \{1,...,n\}$. 
+we have observations $v^{i}=\{x_1^{i},...,x_p^{i}\}$
+for $i \in \{1,...,n\}$. We also denote $\mathcal{Z} = \mathcal{X} \times \mathcal{Y}$, and function space $\mathcal F$. Let $m < n$ be the length of the data $\mathcal I_1$ used for training,
+and let $n -m$ be the length of the data $\mathcal I_2$ used for calibration. A learning algorithm is a function $A$
+from training data $\{x_S^{i}\}_{i=1}^m \in\mathcal{Z}^m$ onto a prediction function $\hat \mu_S \in \mathcal{F}$.
+For each new point $i > m$, we compute a
+prediction $\hat y = \hat \mu_S(v^i_S)$. Given
+the true value $y$, we can compute a loss function
+$\ell(y, \hat y)$.
+
+
+
+\subsection{Conformal Inference}
+\label{subsec:conformal}
+
+For value attribution of modalities, where the value function
+is the predictive loss, we can compute a Shapley value
+for each modality for each observation in the calibration
+set $\mathcal I_2$. 
+Conformal inference provides the link from directly computing
+Shapley values for calibration data points to
+acquiring a Shapley value interval prediction
+on a new test point.
+
+For general importance scores, when our intent
+is solely to understand the significance of each
+modality, split conformal inference with
+a marginal coverage guarantee is sufficient.
+However, if we know the specific value of the
+new test point or we want to shape our model selection around a specific
+subset of $\mathcal X$, conditional conformal inference is very helpful.
+
+Traditionally, conformal inference is used to create prediction
+intervals. We present the basic procedure for split conformal
+prediction. We train a prediction function $\mu \in F$
+from $x^i$ for $i \in \mathcal I_1$.  For $i \in \mathcal I_2$.
+we compute a prediction on $x^i$: $\mu(x^i)$. For
+each prediction, we compute a conformal score
+$S^i = |y^i- \hat \mu(x^i)|$. Given
+some desired significance level $\alpha$, we track
+the $1 - \alpha$ quantile of $\{S^i\}_{i \in \mathcal I_2}$,
+and denote it as $S^u$. we can
+then
+construct a prediction set $\hat C(x) = \{y: S^i \leq S^u\}$.
+
+One issue with split conformal inference is that although the centers of the prediction sets will vary with $x$, the
+widths will be constant with $x$. Therefore, split conformal prediction intervals
+only have a marginal coverage guarantee, that is, over the
+marginal distribution of $X$, rather than a coverage guarantee
+conditional on a specific value $x$.
+For conditional conformal inference, an additional layer is
+added that predicts the desired quantile of the conformal
+score from $x$. 
+
+
+
+
+
+The main modification made in our method is the replacement of
+the standard conformal score $S = |y -\hat\mu(x)|$ with the Shapley value $\phi$. Additionally, the prediction set is now pertaining to the
+Shapley value itself instead.
+
+
+
+
+
+
+
+
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Split Conformal Approach for Shapley Values of Modalities}
+
+We define our value function in this
+context as 
+$$\text{val}(y^i, \hat \mu_{S}(v^i_S))=\ell(y^i, \hat \mu_\emptyset )-\ell(y^i, \hat \mu_S(v^i_S)),$$
+where $\mu_\emptyset$ is the trivial predictor.
+This value function is chosen because
+of its relation to \citet{he2024efficient}'s utility 
+function. Specifically:
+\begin{align*}
+    f_u(S) :&=\mathbb E[\text{val}(y^i, \hat \mu_{S }(v^i_S))]\\
+    &= \inf_{c \in \mathcal Y} \mathbb E[\ell(Y,c)]-\inf_{\mu_S \in \mathcal F} \mathbb E[\ell(Y, \mu_S(V_S))].
+\end{align*}
+The utility function is
+monotonically non-decreasing, meaning that a larger set of modalities
+will always have a utility function as high or higher than a smaller set.
+Under specific conditions, the utility function
+is guaranteed to have more nice properties. For example, \citet{he2024efficient} showed that when the loss
+function is set to the log loss, 
+$$\ell(y, \hat y) = -\sum_{y^*\in \mathcal{Y}}\mathbf1\{y=y^*\}\log \hat y,$$ the utility function is
+equivalent to the mutual information $I(S;Y)$, which is approximately
+submodular and additive.
+\citet{he2024efficient} showed that when the loss function is set to the mean squared error, $$\ell(y, \hat y) = (y-\hat y)^2,$$
+the utility function is equivalent to the variance of the conditional
+expectation $\text{Var}(\mathbb E[Y|S])$, which is strictly submodular and additive.
+In this context, pointwise Shapley values are defined as follows for $i \in \mathcal{I}_2, j \in [p]$:
+\begin{multline*}
+   \phi_j^i = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}  \\
+   [\text{val}(y^i,\hat \mu_{S \cup j}(v^i)) 
+   - \text{val}(y^i,\hat \mu_S(v^i))] 
+\end{multline*}
 \begin{algorithm}
     \begin{algorithmic}
     \caption{Split Conformal Approach for Shapley Values
     of Modalities}\label{alg:split}
-        \Require Data $(v^{(i)}, y^{(i)}), i=1,...,n$, miscoverage level $\alpha \in (0,1)$, regression algorithm $\mathcal{A}$, value function $\text{val}(S,v,\mu)$ with some model
-        prediction $\mu$
+        \Require Data $(v^{i}, y^{i}), i=1,...,n$, miscoverage level $\alpha \in (0,1)$, learning algorithm $\mathcal{A}$
         \Ensure Prediction band for Shapley values,
         over $j \in [p]$
         \State Randomly split $\{1,...,n\}$ into two equal sized subsets $\mathcal{I}_1, \mathcal{I}_2$
-        \State $\hat \mu =\mathcal{A}(\{(v^{(i)},y^{(i)}):i\in \mathcal{I}_1\})$
-        \State $\phi_{i,j} = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}[\text{val}(S \cup j,v^{(i)},\hat \mu) - \text{val}(S, v^{(i)}, \hat \mu)]$, $i \in \mathcal{I}_2$, $j \in [p]$
-        \State $\ell = \lceil (n/2 + 1) (\alpha / 2) \rceil$
-        \State $u = \lceil (n/2 + 1) ( 1 - \alpha / 2) \rceil$ 
-        \State $C_\text{split}(j) = [\phi_{(\ell),j},\phi_{(u),j}]$, for all 
-        $j \in [p]$, where $\phi_{(i),j}$ is the $i$th smallest value of $\phi_{i,j}, i \in \mathcal{I}_2$
+        \State $\hat \mu_S =\mathcal{A}(\{(v^i_S,y^i):i\in \mathcal{I}_1\})$, $S \subseteq [p]$
+        \State Compute $\phi^i_j, i \in \mathcal I_2, j\in [p]$
+        \State $\ell = \lceil (m + 1) (\alpha / 2) \rceil$
+        \State $u = \lceil (m + 1) ( 1 - \alpha / 2) \rceil$ 
+        \State $\bar C_j = [\phi^{(\ell)}_j,\phi^{(u)}_j]$, for all 
+        $j \in [p]$, where $\phi^{(i)}_j$ is the $i$th smallest value of $\{\phi^i_j\}_{i \in \mathcal{I}_2}$
         
     \end{algorithmic}
 \end{algorithm}
+
+
 
 This approach is similar to that of \citet{watson2023explaining}, which
 itself is based off the split conformal inference approach introduced
 by \citet{lei2018distribution}, but 
 adapted to a multimodal learning setting. 
 
-\begin{thm}
+\begin{lemma}
 \label{thm:validity}
-    If $(V_i,Y_i),i=1,...,n$ are i.i.d, then for a new i.i.d. draw $(V_{n+1}, Y_{n+1})$ with values
-    $\phi_{n+1,j}$, $j \in[d]$.
-    $$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) \geq 1 - \alpha$$
+    If $(v^i,y^i),i=1,...,n$ are i.i.d, then for a new i.i.d. draw $(v^{n+1}, y^{n+1})$ with true Shapley values
+    $\{\phi^{n+1}_j\}_{j \in[p]}$.
+    $$\mathbb P(\phi^{n+1}_j \in \bar C_j) \geq 1 - \alpha$$
     for the split conformal prediction band $C_\text{split}$ constructed in
     Algorithm~\ref{alg:split}. Additionally, if we assume that the Shapley 
     values $\phi_{i,j}, i \in \mathcal{I}_2$ have a continuous joint
     distribution for each $j$, then
-    $$\mathbb P(\phi_{n+1},j\in C_\text{split}(j)) \leq 1 - \alpha + \frac{2}{n+2}$$
-\end{thm}
+    $$\mathbb P(\phi^{n+1}_j\in \bar C_j) \leq 1 - \alpha + \frac{2}{n+2}$$
+\end{lemma}
 
-\section{Simulation Study}
+The proof of Lemma~\ref{thm:validity} is shown in
+the Supplementary Material.
+We can also make inferences on the distribution of $\phi_j^{n+1}$, similar to the global measure of variable
+importance from \citet{lei2018distribution}, where we 
+can use standard $z$ or $t$ procedures to test $H_0:\varphi = \mathbb E[\phi_j^{n+1}| \mathcal D_1]=0$,
+with $\mathcal D_1= \{(x^i, y^i), i \in \mathcal I_1\}$.
 
-We applied Algorithm~\ref{alg:split} to the regression synthetic dataset from \citet{he2024efficient} using miscoverage level $\alpha = 0.2$, ordinary linear regression for $\mathcal{A}$,
-and squared error loss for $\text{val}(S,v,\mu)$.
+\subsection{Conditional Conformal Approach for Shapley Values of Modalities}
 
-\newpage
+If we are interested in a particular value or subset of
+the domain $\mathcal X$, model selection conditioned on this 
+additional information is valuable. 
 
-\appendix
-\section{Proofs}\label{app:proofs}
+Let $\Phi$ be the space of Shapley values $\phi$.
+Consider class $\mathcal{G}$ of functions $g$, which maps from
+$\mathcal{X}$ to $\Phi$. We define the pinball loss
+$$\ell_\alpha(\theta, \phi):= \begin{cases}
+    (1-\alpha)(\phi-\theta), & \text{if } \phi \geq \theta \\
+    \alpha(\theta-\phi), & \text{if } \phi < \theta.
+\end{cases}$$
 
-\begin{proof}[Proof of Theorem~\ref{thm:validity}]
-Because $\phi_{n+1,j} \in C_\text{split}(j) \iff \phi_{(\ell),j} \leq \phi_{n+1} \leq \phi_{(u),j}$,
-$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 
-\mathbb P(\phi_{(\ell),j} \leq \phi_{n+1,j} \leq \phi_{(u), j}).$
-By exchangeability of $\phi_{n+1,j}$ and $\phi_{i,j}, i \in \mathcal{I}_2$, which we re-index from $1$ to $m = n/2$,
-the rank of $\phi_{n+1,j}$ among $\phi_1,...,\phi_m,\phi_{n+1}$ is
-uniformly distributed over the set $\{1,...,m+1\}$. Therefore,
+For each modality $j$,
+we define 
 \begin{align*}
-\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) &= 
-\mathbb P(\phi_{n+1,j} \leq \phi_{(u), j}) - \mathbb P(\phi_{n+1,j} < \phi_{(\ell), j}) \\
-&= \frac{u}{m+1} - \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1}\\
-&= \frac{\lceil (m+1)(1-\alpha/2)\rceil - \lfloor(m+1)(\alpha/2)\rfloor}{m+1} \\
-&\geq 1- \alpha.
+    \hat h_{\phi_j}^{1-\alpha} := \underset{h \in \mathcal{H}}{\arg \min} \frac{1}{m+1} \sum_{i=m+1}^n \ell_\alpha(h(x^i), \phi^i_j)+\\
+    \frac{1}{m+1}\ell_\alpha(h(x^{n+1}),\phi_j)+\mathcal{R}(h)
 \end{align*}
-We define $D(j)$ such that 
-$\phi_{n+1,j} \in D(j) \iff \phi_{n+1,j} < \phi_{(\ell),j}$ or 
-$\phi_{n+1,j} > \phi_{(u),j}$. Therefore,
+
+The inclusion of the symbolic term $\ell_\alpha (h(x^{n+1}), \phi_j)$ follows Equation 3.1 of \citet{gibbs2025conformal} and ensures exchangeability between calibration and test points, which is required for conditional coverage.
+We construct $\mathcal H$ using functions from an RKHS. Let $K: \mathcal X \times \mathcal X \rightarrow \mathbb R$ be a 
+positive definite kernel and $\mathcal H_K$ be the associated RKHS
+with inner product $\langle \cdot, \cdot \rangle_K$ and norm $||\cdot||_K$. Let $\Omega: \mathcal X \rightarrow \mathbb R^d$
+denote some finite-dimensional representation of $\mathcal X$.
+Then, we define $\mathcal H = \{h_K(\cdot) +\Omega(\cdot)^\top \beta:h_K \in H_K, \beta \in \mathbb R^d\} $ and $\mathcal R (h_K + \Omega(\cdot)^T \beta)=\lambda_1||h_K||^2_K +\lambda_2||\beta||_2^2$, with $\lambda_1,\lambda_2 > 0$.
+Note that $\lambda_1||h_K||^2_K$ only acts on $h_k$, not on the entire $h \in \mathcal H$.
+We set $$\hat C_j(x^{n+1}):=\{\phi:\hat h_{\phi_j}^{\alpha/2q}(x^{n+1})\leq\phi\leq \hat h_{\phi_j}^{1-\alpha/2q}(x^{n+1})\},$$
+where $q$ is the desired maximum number of modalities.
+\begin{algorithm}
+    \begin{algorithmic}
+    \caption{Conformal Approach for Conditional Shapley Values
+    of Modalities}\label{alg:cond}
+        \Require Data $(v^{i}, y^{i}), i=1,...,n$, miscoverage level $\alpha \in (0,1)$, learning algorithm $\mathcal{A}$, value function $\text{val}(v_S, \hat\mu)$ derived from model trained on subset $S$ of modalities,
+        function class $\mathcal G$.
+        \Ensure Prediction band for Shapley values for each $j \in [p]$
+        \State Randomly split $\{1,...,n\}$ into two equal sized subsets $\mathcal{I}_1, \mathcal{I}_2$ of length $m = n/2$
+        \State $\hat \mu_S =\mathcal{A}(\{(v^i_S,y^i):i\in\mathcal{I}_1\})$, $S \subseteq [p]$
+        \State Compute $\phi^i_j, i \in \mathcal I_2, j\in [p]$
+        \State Estimate $\hat h_{\phi_j}^{\alpha/2}$ and $\hat h_{\phi_j}^{1-\alpha/2},j\in[p]$
+        \State Compute $\hat C_j(x^{n+1}), j\in[p]$
+    \end{algorithmic}
+\end{algorithm}
+
+We consider two settings. In the first, we take $\{(X^i, Y^i)\}_{i=1}^{n+1} \overset{i.i.d.}\sim P$, and we
+write $\mathbb P_P$ and $\mathbb E_P$ when 
+referring to the probability and expectation with respect to
+distribution $P$. Let $P_X$ be the marginal distribution of $X$ under the joint distribution $P$, and let
+$P_{Y|V}$ be the distribution of $Y$ conditional on $X$ under the joint distribution $P$. In the second, we take $\{(X^i, Y^i)\}_{i=1}^n \overset{i.i.d.}\sim P$, while $X^{n+1} \sim (f(x)/\mathbb E[f(X)]) \cdot dP_X(x)$ and
+$Y^{n+1}|X^{n+1} \sim P_{Y|X}$, and we write $\mathbb P_f$ and
+$\mathbb E_f$ when referring to the probability and expectation
+under this scenario.
+We obtain the following lemma which is similar to Theorem 3 from
+\citet{gibbs2025conformal}.
+\begin{lemma}
+\label{thm:conditional}
+Let $\mathcal H$ be any vector space, and assume
+that for all $f, g \in \mathcal H$, the partial derivative of
+$\mathcal R(g + \epsilon f)$ with respect to $\epsilon$ exists.
+If $f$ returns nonnegative values with $\mathbb E_P[f(X)] > 0$,
+then the prediction set given by $\hat C_j(x^{n+1})$ satisfies the
+lower bound
+\begin{multline*}
+    \mathbb P_f(\phi^{n+1}_j \in \hat C_j(x^{n+1})) \geq \\1 - \alpha - \frac{1}{\mathbb E_P[f
+(X)]}\mathbb E\Big[\frac{d}{d \epsilon} \mathcal R(\hat h^{1-\alpha/2}_{\phi_j}+\epsilon f)\Big|_{\epsilon=0} \ - \\
+\frac{d}{d \epsilon} \mathcal R(\hat h^{\alpha/2}_{\phi_j}+\epsilon f)\Big|_{\epsilon=0}\Big]
+\end{multline*}
+If we suppose that $\{(X^i, Y^i)\}_{i=1}^{n+1} \overset{i.i.d.}\sim P$, then for $f \in \mathcal F$,
+the following two-sided bound is also satisfied,
+\begin{multline*}
+    \mathbb E[f(x^{n+1})(\mathbf 1\{\phi^i_j\in \hat C_j(x^{n+1})\}-(1-\alpha))]=\\-\mathbb E \Big [\frac{d}{d\epsilon}R(\hat h^{1-\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0}  - \frac{d}{d\epsilon}R(\hat h^{\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0} \Big ] + \epsilon_{int},
+\end{multline*}
+where $\epsilon_{int}$ is an interpolation error term such
+that $|\epsilon_{int}| \leq \mathbb E[|f(x^i)| \mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\}] \ +  
+\mathbb E[|f(x^i)| \mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}]$.
+\end{lemma}
+
+
+
+\begin{assumption}[Moment conditions for RKHS bounds \citep{gibbs2025conformal}]
+\label{assumption:moment}
+There exists positive constants $C_2,C_3, c_2, C_S, C_f,\rho$ (specific to each $j$)
+such that
 \begin{align*}
-    \mathbb P(\phi_{n+1,j} \in D(j)) &= \mathbb P(\phi_{n+1,j} < \phi_{(\ell),j}) + \mathbb P(\phi_{n+1,j} >\phi_{(u),j}) \\
-    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1} + \frac{m-u}{m+1} \\
-    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor +m-\lceil (m+1)(1-\alpha/2)\rceil}{m+1} \\
-    &\leq \frac{(m+1)(\alpha/2)+(m+1)(\alpha/2)-1}{m+1}\\
-    &=\alpha-\frac{1}{n/2+1} = \alpha - \frac{2}{n+2}.
+    \mathbb E[||\Omega(X^i)||^2_2] &\leq C_2d, \\
+    \sup_{f\in\mathcal H} \mathbb E[|f(X^i)|\cdot||\Omega(X^i)||_2^2] &\leq C_3\mathbb E[|f(X)|]d,\\
+    \sup_{\beta:||\beta||_2=1} \mathbb E[|\Omega(X^i)^\top\beta|^2] &\leq c_2,\\
+    \sup_{f \in \mathcal H} \mathbb E[|f(X^i)|(\phi^i_j)^2] &\leq C_S \mathbb E[|f(X^i)|]\\
+    \sup_{f\in \mathcal H} \sqrt{\mathbb E [|f(X^i)|^2]} &\leq
+    C_f \mathbb E[|f(X^i)|],\\
+    \inf_{\beta:||\beta\|_2=1} \mathbb E[|\Omega(X^i)^\top \beta|] &\geq \rho, \text{ and} \\
+    \mathbb E[|\phi_j^i|^2] < \infty
 \end{align*}
-And because $\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 1- \mathbb P(\phi_{n+1,j} \in D(j))$,
-$$\mathbb P(\phi_{n+1,j} \in C_\text{split}(j)) = 1 - \alpha + \frac{2}{n+2}.$$
 
-\end{proof}
+    
+\end{assumption}
+
+\begin{assumption}[Bounded Utility]
+\label{assumption:bounded_utility}
+    Assume the utility function is bounded, i.e., $|\phi_j| \leq B$  almost surely.
+\end{assumption}
+
+To show near-optimality of model selection for classification, we require two assumptions from \citet{he2024efficient}.
+\begin{assumption}[$\epsilon$-Approximate Conditional Independence \citep{he2024efficient}]
+\label{assumption:conditional}
+There exists a positive constant $\epsilon \geq 0$
+such that, for all $S, S' \subseteq V$ with $S \cap S' = \emptyset$, we have $I(S;S'|Y) \leq \epsilon$
+\end{assumption}
+
+\begin{assumption}[$\epsilon$-Approximate Marginal Independence \citep{he2024efficient}]
+\label{assumption:marginal}
+There exists a positive constant $\epsilon > 0$ such
+that, for all $S, S' \subseteq V$ with $S \cap S'=\emptyset$, we have $I(S;S') \leq \epsilon$
+    
+\end{assumption}
+
+If we select the modalities with $q$-highest
+$\phi_j^{(\ell)}$, we get the following guarantees
+with regards to the optimal set $S^*_q = \arg\max_{S:|S|\leq q} f_u(S)$
+
+\begin{theorem}[Selection Consistency for Classification]
+Let $S^*_q$ be the optimal set of size less than or equal to $q$.
+Let $\hat S^\alpha_q$ be the set of size less than or equal to $q$ selected
+by our algorithm for target 
+failure probability $\alpha \in (0,1)$, and let
+$\ell(y, \hat y) = -\sum_{y^*\in \mathcal{Y}}\mathbf1\{y=y^*\}\log \hat y$.
+Under Assumptions~ \ref{assumption:moment}-\ref{assumption:marginal},
+the following inequality holds with probability
+at least $1 - \alpha - 2\lambda \epsilon_n$:
+$$\text {val} (\hat S^\alpha_q) \geq \text{val}(S^*_q)-\sum_{j\in S^*_q} 2(\kappa\sqrt{\frac B \lambda} + C_\Omega(x)\sqrt\frac{B}{\lambda_2}) - 4q \delta$$
+
+    
+\end{theorem}
+
+To show near-optimality of model selection for regression, we consider a set $\Omega(V)=\{\Omega_j(X_j)\}_{j=1}^p$ of feature transformations such that two additional assumptions from \citet{he2024efficient} are satisfied.
+\begin{assumption}[Linearity \citep{he2024efficient}]
+\label{assumption:linearity}
+For some $\alpha$ and $\beta_j$ for $j \in \{1,...,p\}$,
+    $$\mathbb E[Y | \Omega(V)]=\sum_{X_j \in V} \beta_j \Omega_j(X_j) + \alpha$$
+\end{assumption}
+
+\begin{assumption}[Multivariate Gaussian Marginal Distribution \citep{he2024efficient}]
+\label{assumption:multivariate}
+    For some mean $\mu$ and covariance  matrix $\Sigma$,
+    $$\Omega(V) \sim \mathcal N(\mu, \Sigma)$$
+\end{assumption}
+
+\begin{theorem}[Selection Consistency for Regression]
+Let $S^*_q$ be the optimal set of size less than or equal to $q$.
+Let $\hat S^\alpha_q$ be the set of size less than or equal to $q$ selected
+by our algorithm for target 
+failure probability $\alpha \in (0,1)$, and
+let $\ell(y, \hat y) = (y-\hat y)^2$
+Under Assumptions~ \ref{assumption:moment}, \ref{assumption:bounded_utility}, \ref{assumption:linearity}, and \ref{assumption:multivariate},
+the following inequality holds with probability
+at least $1 - \alpha - 2\lambda \epsilon_n$:
+$$\text {val} (\hat S^\alpha_q) \geq \text{val}(S^*_q)-\sum_{j\in S^*_q} 2(\kappa\sqrt{\frac B \lambda} + C_\Omega(x)\sqrt\frac{B}{\lambda_2})$$
+
+
+    
+\end{theorem}
+
+Thus, our method offers a conditional guarantee on near-optimality
+of the selected set $\hat S^\alpha_q$ in both classification and
+regression settings.
 
 
 
-\bibliography{main}
-\bibliographystyle{chicago}
+\section{Empirical Results}
+\label{sec:empirical}
+
+\subsection{Regression}
+\label{subsec:reg}
+
+For regression, we applied our method
+to the synthetic regression data set example from 
+\citet{he2024efficient}.
+In this setting, we have $p=10$ modalities for $x$, each
+with $d = 3$ dimensions.
+First, we generate a $pd \times pd$ matrix of uniformly random numbers from -1 to 1, multiply it by its transpose,
+divide the values by the row sums of the absolute values,
+and we call the result $B$.
+Then we construct $p$ matrices of dimension $d \times d$ with a similar procedure and place them along the diagonal of
+a $pd \times pd$ matrix called $A$, where all other elements have value 0. We let 
+$$\Sigma = (1-\epsilon)A+\epsilon B$$
+
+We then gather $n=1000$ samples of $x$, where $X \sim \mathcal N(\mu,\Sigma)$, with length-$pd$ zero-vector $\mu$. Lastly
+we generate $y = x^T \beta+\alpha+\text{error}$, where
+$\beta$ is a length-$pd$ vector of uniformly random numbers
+from -1 to 1, $\alpha$ is a single uniformly random number from -1 to 1, and the errors are $n$ standard normal
+error terms for each observation. We use $m = 250$ for
+the training, 250 points for calibration, and the remaining
+points for testing.
+
+
+
+
+We then applied Algorithm~\ref{alg:cond} to the data with ordinary linear regression for $\mathcal{A}$,
+and squared error loss for $\ell$,
+refitting the model $\mu$ for each coalition. In the
+RKHS fitting step, we use Singular Value Decomposition as a dimension reduction,
+and utilize 5-fold cross validation to select our hyper-parameters $\lambda_1$
+and $\lambda_2$, where the objective is maximization of 
+$$\sum_{i \in \mathcal V}\sum_{j \in \hat S^\alpha_q} \phi^{i}_j,$$
+where $\mathcal V$ is a fold.
+Figure~\ref{fig:msp_reg_r2} and \ref{fig:msp_reg_mse} show the model
+selection paths using our method.
+We
+allow coalitions with size $|S| \leq q$. This change
+allows us to achieve notably better MSE for $q = 2$ and $q = 3$ while
+decreasing the modalities, and thus, the computational
+resources. Note that this model selection figure is
+an example to show the conditional near-optimality,
+but the prior knowledge we use to select our models
+may not be as specific as a point value. One could
+also integrate $\hat h_{\phi_j}^{\alpha/2q}$ over a desired
+subset of $\mathcal X$ and choose a single model
+that maximizes this quantity.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_reg_r2.pdf}
+    \caption{Test $R^2$ of our selected model for synthetic
+    regression data with counts of coalitions such that 
+    $|S| \leq q$.}
+    \label{fig:msp_reg_r2}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_reg_mse.pdf}
+    \caption{Test MSE of our selected model for synthetic regression data with counts
+    of coalitions such that $|S| \le q$.}
+    \label{fig:msp_reg_mse}
+\end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1\linewidth]{manuscript/figures/modality_attribution_boxplot.pdf}
+%     \caption{Distributions of Shapley values for each modality in
+%     \citet{he2024efficient}'s regression setting.}
+%     \label{fig:boxplot}
+% \end{figure}
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1\linewidth]{manuscript/figures/shapley_value_intervals.pdf}
+%     \caption{80\% split conformal intervals for Shapley values for
+%      each modality in \citet{he2024efficient}'s regression setting.}
+%     \label{fig:intervals}
+% \end{figure}
+
+
+\subsection{Classification}
+\label{subsec:class}
+
+We also applied our method to the popular MNIST dataset, grouping
+the pixels into 9 patches similarly to what was done in \citet{he2024efficient}. For some background, the MNIST
+dataset consists of 50,000 training images, and 10,000 test images, each of which has 28x28 pixels and is a digit from 0-9. In
+our study, we split each image into 9 patches, meaning each patch
+is a rectangle with side length 9 or 10. 
+The base learner used throughout the experiment is a lightweight convolutional neural network tailored to MNIST-scale images. The network takes a $28 \times 28 \times 1$ grayscale input and consists of a single convolutional layer with 32 
+$3 \times 3$ filters and ReLU activation, followed by 
+$2 \times 2$ max pooling. The resulting feature maps are flattened and passed to a fully connected hidden layer with 128 ReLU-activated units, which serves as the main representation layer for classification. The output layer is a 10-way softmax, producing class probabilities over the MNIST digits. The model is trained using the Adam optimizer with learning rate 
+$10^{-3}$ and the sparse categorical cross-entropy loss. For each fit within the ShapMML procedure, the network is trained for a single epoch with mini-batches of size 16 and a .1 validation split.
+
+Figure~\ref{fig:mnist_mean_shapley_patches} shows the mean Shapley
+value ($\hat \varphi$) during the calibration step for each patch. Unsurprisingly, the patch at the center seems to have high importance,
+whereas the patches at the corners seem to have relatively low importance,
+as more of the diguit would be shown near the center.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/mnist_mean_shapley_patches.pdf}
+    \caption{Mean Marginal Shapley per Patch ($\hat \varphi$)}
+    \label{fig:mnist_mean_shapley_patches}
+\end{figure}
+
+We apply our Algorithm~\ref{alg:cond}
+to the data using log loss for $\ell$. In the RKHS step,
+we use Principal Component Analysis as a dimension reduction.
+Figure~\ref{fig:msp_mnist_acc} and \ref{fig:msp_mnist_ce} show the model
+selection paths using our method. The model's performance
+is monotonically increasing with $q$ and can even be quite
+accurate with only one modality. Our selection path also
+has a slight improvement over \citet{he2024efficient}'s method,
+given that a different model may be selected for each test point.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_mnist_acc.pdf}
+    \caption{Test accuracy of our selected model with counts
+    of coalitions such that $|S| \le q$.}
+    \label{fig:msp_mnist_acc}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_mnist_ce.pdf}
+    \caption{Test MSE of our selected model with counts
+    of coalitions such that $|S| \le q$.}
+    \label{fig:msp_mnist_ce}
+\end{figure}
+
+Figure~\ref{fig:mnist_selection_frequency_q1} shows how often
+each modality was selected when maximum $q$ was set to 1.
+Again, we found that the center patch was selected most often, but
+whereas the marginal method would not allow other modalities to be
+selected, we see that there are some instances where other patches
+are selected in our conditional method.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/mnist_selection_frequency_q1.pdf}
+    \caption{Selection Frequency per Patch (q \leq 1)}
+    \label{fig:mnist_selection_frequency_q1}
+\end{figure}
+
+
+
+\subsection{Alzheimer's Data}
+\label{subsec:adni}
+
+Lastly, we apply our data to a new Alzheimer's dataset.
+The response is a composite score that measures cognition, memory, etc. There are three region-wise modalities, (a) amyloid beta, (b) tau (a protein that can be an indicator of Alzheimer's) and (c) cortical thickness from MRI scans.
+The modality amyloid beta is not by brain region, but is summarized as a single quantity. There are two representations, where one is a binary representation, and the other is a continuous representation. 
+% Additional covariates include age, gender, education, and APOE4, the last of which is a genetic variant that increases the risk
+% of Alzheimer's. Another variable is diagnostic status, which has three levels: AD/MCI/CU. The sample size is 700.
+We used the first 350 for training and calibration, which we then
+split in half. The model we chose for this application XGBoost with 100 estimators, a learning rate of 0.1, a max-depth of 3, and 200:50 train-validation split.
+In this case, we
+
+First, we report our analysis using marginal conformal
+methods in Table~\ref{tab:shapley_summary} and
+Figure~\ref{fig:shapley_density_by_modality}. The conformal
+intervals are predictions for a new test point,
+and the p-value is a t-test on the global
+mean of Shapley values for calibration points. Therefore,
+the conformal intervals are wider and include 0. We find
+that tau and MRI are significant, and amyloid $\beta$ is close to significance.
+Our density plot also shows that the Shapley value of Amyloid 
+$\beta$ is more concentrated around 0, but the Shapley value distributions of
+Tau and MRI are comparable, perhaps with MRI having heavier tails than Tau.
+\begin{table}[h!]
+\centering
+\caption{Shapley Value Summary for ADNI Study: Conformal Intervals and Mean Test P-values}
+\begin{tabular}{c c c c}
+\hline
+Modality & LB & UB & P-value \\
+\hline
+Amyloid $\beta$ & -24.548887 & 31.329876 & 0.091375 \\
+Tau & -70.768166 & 136.775909 & $<$0.000386 \\
+MRI & -33.590034 & 127.455818 & $<$0.003184 \\
+\hline
+\end{tabular}
+\label{tab:shapley_summary}
+\end{table}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/shapley_density_by_modality.pdf}
+    \caption{Caption}
+    \label{fig:shapley_density_by_modality}
+\end{figure}
+Figure~\ref{fig:msp_adni_mse} shows the test MSE using
+our method with different $q$'s and tuned hyperparameters $\lambda_1$ and $\lambda_2$ for each $q$. Note that the method may select
+a different model at each point. In this example, we also include the counts
+of each coalition, as there are only 3 modalities. 
+
+% We sought to achieve
+% the best predictive MSE using one modality ($q = 1$). We tried
+% regularization parameters $\lambda_1 \in \{1, 0.1, 0.01, 0.001\}$ and
+% $\lambda_2 \in \{1, 0.1, 0.01, 0.001\}$. We find
+% that for all our hyperparameter choices, our method
+% results in lower MSE than simply predicting modality 1.
+
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_adni_r2.pdf}
+    \caption{Test $R^2$ of our selected model with counts
+    of coalitions such that $|S| \le q$.}
+    \label{fig:msp_adni_r2}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{manuscript/figures/msp_adni_mse.pdf}
+    \caption{Test MSE of our selected model with counts
+    of coalitions such that $|S| \le q$.}
+    \label{fig:msp_adni_mse}
+\end{figure}
+
+
+
+\section{Related Work}
+\label{sec:related}
+
+Shapley values were originally introduced in cooperative game theory by \citet{shapley1951notes}. They were later
+adapted to machine learning for feature attribution by
+\citet{lundberg2017unified}. Subsequent work studied
+efficient computation and scalable approximations \citep{sundararajan2020many, chen2023algorithms, watson2023explaining}.
+Most of this literature focuses on feature-level explanations
+and treats Shapley values as fixed quantities. Uncertainty
+due to finite samples is usually not addressed.
+
+\citet{lu2023theory} provides an enlightening study of
+the advantages of multimodal learning. Some studies in Section~\ref{sec:intro} were mentioned that apply multimodal learning \citep{yuhas1989integration, reed2022generalist,achiam2023gpt}. Using more modalities
+often improves predictive accuracy, but this can
+add the expense of increased computational cost and
+reduced interpretability. \citet{he2024efficient} proposed a
+Shapley-based framework for modality selection with
+a near-optimality guarantee. That method does not quantify uncertainty in modality importance. It also
+cannot adapt selection to the observed covariates at any level.
+
+There are several works that do consider
+uncertainty in explanations. Bayesian approaches
+characterize the posterior variability of Shapley values \citep{agussurja2022convergence}.
+Resampling-based methods estimate variability through the bootstrap \citep{huang2023increasing}. 
+\citet{watson2023explaining} introduced split conformal inference
+for feature-level Shapley values with a marginal coverage guarantee. Our work extends or even generalizes this idea
+to modality-level Shapley values with a conditional
+coverage guarantee. We further connect uncertainty 
+quantification to model selection.
+
+Conformal inference provides finite-sample distribution-free
+guarantees fo prediction sets \citep{lei2018distribution, angelopoulos2021gentle}.
+Split conformal methods yield only marginal coverage, but
+recent work develops conditional or locally
+adaptive guarantees \citet{romano, chernozhukov2021distributional}. \citet{gibbs2025conformal}
+introduced a general framework for conditional conformal inference
+using weighted exchangeability and RKHS-based quantile estimation. Unlike these works, we apply conditional
+conformal inference to Shapley values rather than outcomes.
+
+Overall,
+our method unifies
+Shapley-based modality importance,
+uncertainty quantification,
+and conditional model selection.
+To the best of our knowledge,
+this is the first framework
+to provide conditional near-optimality guarantees
+for modality selection
+using conformal inference.
+
+
+
+
+\section{Concluding Remarks}
+\label{sec:concluding}
+
+In this paper,
+we introduced a Shapley value-based framework for uncertainty-aware modality attribution and modality selection in multimodal
+machine learning. Our method combines Shapley values,
+split and conditional conformal inference, and
+utility-based model selection. This yields finite-sampel 
+guarantees for both modality importance and predictive
+performance.
+
+Unlike prior Shapley-based approaches, we explicitly quantify
+uncertainty in modality-level importane scores. The 
+resulting conformal intervals allow researchers to distinguish
+modality effects from sampling noise. This
+is particulary vital in multimodal settings, where
+principles modality reduction is often required.
+
+A key contribution of our work is the use of conditional conformal inference to guide inference about modalities and
+modality selection. This allows the selected modality set
+to depend on the observed covariates. We provide conditional
+near-optimality guarantees for both regression and classification, briding the gap between
+interpretability, uncertainty quantification, and model selection. To our knowledge,
+this is the first framework to offer such guarantees for
+multimodal learning.
+
+Empirically,
+we demonstrated the effectiveness
+of our method
+on synthetic regression data,
+image classification with MNIST,
+and an Alzheimer's disease application.
+In all settings,
+our approach produces competitive
+or improved predictive performance
+while using fewer modalities.
+The ADNI analysis further illustrates
+how uncertainty-aware modality attribution
+can yield scientifically meaningful insights
+in applied biomedical problems.
+
+There are several directions for future work.
+First, Shapley value computation can be expensive
+when the number of modalities is large. Incorporating 
+approximation schemes may significantly improve scalability.
+Second, our conditional guarantees are local to the observed
+covariates. Extending the framework to target regions
+of the covariate space,
+similar to region-adaptive conformal prediction, is
+a promising direction.
+Finally, it would be of interest to extend our results to
+a sequential setting, where modalities may arrive at different
+points in time (which is actually the case for our modalities measuring Alzheimer's). It would also be interesting to develop a model selection
+approach with a conditional near-optimality guarantee under target shift, similar to the prediction sets introduced by
+\citet{yi2025distribution}.
+
+
+\bibliography{main.bib}
+\bibliographystyle{icml2025}
+
+
+
+
 
 \end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 and 2024 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
