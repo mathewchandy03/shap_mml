@@ -1,0 +1,480 @@
+%%%%%%%% ICML 2025 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2025} with \usepackage[nohyperref]{icml2025} above.
+\usepackage{hyperref}
+
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Use the following line for the initial blind version submitted for review:
+\usepackage{icml2025}
+
+% If accepted, instead use the following line for the camera-ready submission:
+% \usepackage[accepted]{icml2025}
+
+% For theorems and such
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+% if you use cleveref..
+\usepackage[capitalize,noabbrev]{cleveref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Todonotes is useful during development; simply uncomment the next line
+%    and comment out the line below the next line to turn off comments
+%\usepackage[disable,textsize=tiny]{todonotes}
+\usepackage[textsize=tiny]{todonotes}
+
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Supplementary Material for ``Conditional Conformal Intervals for Shapley Value
+of Modalities in Machine Learning"}
+
+\begin{document}
+
+\onecolumn
+\icmltitle{Supplementary Material for ``Conditional Conformal Intervals for Shapley Value
+of Modalities in Machine Learning"}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2025
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Firstname1 Lastname1}{equal,yyy}
+\icmlauthor{Firstname2 Lastname2}{equal,yyy,comp}
+\icmlauthor{Firstname3 Lastname3}{comp}
+\icmlauthor{Firstname4 Lastname4}{sch}
+\icmlauthor{Firstname5 Lastname5}{yyy}
+\icmlauthor{Firstname6 Lastname6}{sch,yyy,comp}
+\icmlauthor{Firstname7 Lastname7}{comp}
+%\icmlauthor{}{sch}
+\icmlauthor{Firstname8 Lastname8}{sch}
+\icmlauthor{Firstname8 Lastname8}{yyy,comp}
+%\icmlauthor{}{sch}
+%\icmlauthor{}{sch}
+\end{icmlauthorlist}
+
+\icmlaffiliation{yyy}{Department of XXX, University of YYY, Location, Country}
+\icmlaffiliation{comp}{Company Name, Location, Country}
+\icmlaffiliation{sch}{School of ZZZ, Institute of WWW, Location, Country}
+
+\icmlcorrespondingauthor{Firstname1 Lastname1}{first1.last1@xxx.edu}
+\icmlcorrespondingauthor{Firstname2 Lastname2}{first2.last2@www.uk}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+\printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+
+
+
+\section{Proofs}
+\label{sec:proofs}
+
+\begin{proof}[Proof of Lemma 3.1]
+\label{proof:validity}
+Because $\phi^{n+1}_j \in C_\text{split}(j) \iff \phi^{(\ell)}_j \leq \phi^{n+1}_j \leq \phi^{(u)}_j$,
+$\mathbb P(\phi^{n+1}_j \in C_\text{split}(j)) = 
+\mathbb P(\phi^{(\ell)}_j \leq \phi^{n+1}_j \leq \phi^{(u)}_j).$
+By exchangeability of $\phi^{n+1}_j$ and $\phi^i_j, i \in \mathcal{I}_2$, which we re-index from $1$ to $m = n/2$,
+the rank of $\phi^{n+1}_j$ among $\phi^1_j,...,\phi^m_j,\phi^{n+1}_j$ is
+uniformly distributed over the set $\{1,...,m+1\}$. Therefore,
+\begin{align*}
+\mathbb P(\phi^{n+1}_j \in C_\text{split}(j)) &= 
+\mathbb P(\phi^{n+1}_j \leq \phi^{(u)}_j) - \mathbb P(\phi^{n+1}_j < \phi^{(\ell)}_j) \\
+&= \frac{u}{m+1} - \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1}\\
+&= \frac{\lceil (m+1)(1-\alpha/2)\rceil - \lfloor(m+1)(\alpha/2)\rfloor}{m+1} \\
+&\geq 1- \alpha.    
+\end{align*}
+
+We define $D(j)$ such that 
+$\phi^{n+1}_j \in D(j) \iff \phi^{n+1}_j < \phi^{(\ell)}_j$ or 
+$\phi^{n+1}_j > \phi^{(u)}_j$. Therefore,
+\begin{align*}
+    \mathbb P(\phi^{n+1}_j \in D(j)) &= \mathbb P(\phi^{n+1}_j < \phi^{(\ell)}_j) + \mathbb P(\phi^{n+1}_j >\phi^{(u)}_j) \\
+    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor}{m+1} + \frac{m-u}{m+1} \\
+    &= \frac{\lfloor(m+1)(\alpha/2)\rfloor +m-\lceil (m+1)(1-\alpha/2)\rceil}{m+1} \\
+    &\leq \frac{(m+1)(\alpha/2)+(m+1)(\alpha/2)-1}{m+1}\\
+    &=\alpha-\frac{1}{n/2+1} \\
+    &= \alpha - \frac{2}{n+2}.
+\end{align*}
+And because $\mathbb P(\phi^{n+1}_j \in C_\text{split}(j)) = 1- \mathbb P(\phi^{n+1}_j \in D(j))$,
+$$\mathbb P(\phi^{n+1}_j \in C_\text{split}(j)) = 1 - \alpha + \frac{2}{n+2}.$$
+
+\end{proof}
+
+\begin{proof}[Proof of Lemma 3.2]
+We first examine the first order conditions of the convex optimization problem for some $\alpha$:
+\begin{align*}
+    \hat h_{\phi_j}^{1-\alpha} &= \underset{h \in \mathcal{H}}{\arg \min} \frac{1}{m+1} \sum_{i=m+1}^n \ell_\alpha(h(x^i), \phi^i_j) \ + \frac{1}{m+1}\ell_\alpha(h(x^{n+1}),\phi_j)+\mathcal{R}(h)\\
+    &= \frac{1}{m+1}\sum_{i=m+1}^{n+1}\ell_\alpha(h(x^i),\phi_j^i)+\mathcal{R}(h).
+\end{align*}
+We have that for any fixed $h \in \mathcal{H}$,
+$$0 \in \partial_\epsilon \Big (\frac{1}{m+1} \sum_{i=m+1}^{n+1} \ell_\alpha(\hat h^{1-\alpha}_{\phi_j}(x^i) + \epsilon f(x^i), \phi_j^i)+\mathcal{R}(\hat h^{1-\alpha}_{\phi_j} + \epsilon f) \Big ) \Big |_{\epsilon = 0}$$
+
+Then the subgradients of the pinball loss term in the direction
+of $f(.)$ are:
+\begin{align*}
+    \big \{\frac{1}{m+1}\big ( \sum_{\phi_j^i \neq \hat h^{1-\alpha}_{\phi_j }(x^i)} f(x^i)(\alpha - \mathbf 1\{ \phi^j_i > \hat h^\alpha_{\phi_j }\})\ + \sum_{\phi^i_j=\hat h^{1-\alpha}_{\phi_j }(x^i)}t^if(x^i)\big ) \big |t^i \in [\alpha-1,\alpha] \big \}
+\end{align*}
+Choose $t^{i*}_\alpha \in [\alpha-1,\alpha]$ such that they set
+the subgradient to 0. Rearranging, we obtain
+\begin{align*}
+    \frac{1}{m+1}\sum_{i=m+1}^{n+1} f(x^i) (\alpha-\mathbf 1\{\phi^i_j>\hat h^{1-\alpha}_{\phi_j }(x^i)\}) = \frac{1}{m+1}\sum_{\phi^i_j = \hat h^{1-\alpha}_{\phi_j }(x^i)}(\alpha-t^{i*}_\alpha)f(x^i) -\frac{d}{d\epsilon}R(\hat h^{1-\alpha}_{\phi_j }+\epsilon f) \big |_{\epsilon=0}.
+\end{align*}
+We can relate the left hand side of the above equation to a
+desired coverage guarantee as below:
+\begin{equation}
+\label{D1}
+    \mathbb E[f(x^{n+1})(\mathbf 1\{\phi^i_j\in \hat C_j(x^{n+1})\}-(1-\alpha))] = \mathbb E[f(x^{n+1})(\alpha-\mathbf 1\{\phi^i_j >\hat h^{1-\alpha/2}_{\phi_j }(x^{n+1})\}-\mathbf 1\{\phi^i_j<\hat h^{\alpha/2}_{\phi_j}(x^{n+1})\})]
+\end{equation}
+
+Since both $\hat h^{1-\alpha/2}_{\phi_j }$ and $\hat h^{\alpha/2}_{\phi_j}$ are fit symmetrically, 
+$\{(f(x^i), \hat h^{\alpha/2}_{\phi_j}, \hat h^{1-\alpha/2}_{\phi_j } (x^i), \phi^i_j)\}_{i=1}^{n+1}$ are exchangeable with each other. Thus,
+\begin{multline*}
+\label{D1}
+    \mathbb E[f(x^{n+1})(\alpha-\mathbf 1\{\phi^i_j >\hat h^{1-\alpha/2}_{\phi_j }(x^{n+1})\}-\mathbf 1\{\phi^i_j<\hat h^{\alpha/2}_{\phi_j}(x^{n+1})\})] \\
+    = \mathbb E[f(x^{n+1})(\alpha/2-\mathbf 1\{\phi^i_j >\hat h^{1-\alpha/2}_{\phi_j }(x^{n+1})\})\ 
+    +f(x^{n+1})(\alpha/2 -\mathbf 1\{\phi^i_j<\hat h^{\alpha/2}_{\phi_j}(x^{n+1})\})] \\
+    = \mathbb E[f(x^{n+1})(\alpha/2-\mathbf 1\{\phi^i_j >\hat h^{1-\alpha/2}_{\phi_j }(x^{n+1})\})-f(x^{n+1})(1-\alpha/2 -\mathbf 1\{\phi^i_j>\hat h^{\alpha/2}_{\phi_j}(x^{n+1})\})] \\
+    = \mathbb E\Big [\frac{1}{m+1}\sum_{i=m+1}^{n+1}f(x^i)(\alpha/2-\mathbf 1\{\phi^i_j >\hat h^{1-\alpha/2}_{\phi_j }(x^i)\}) - \frac{1}{m+1}\sum_{i=m+1}^{n+1}f(x^i)(1-\alpha/2-\mathbf 1\{\phi^i_j >\hat h^{\alpha/2}_{\phi_j }(x^i)\})\Big ] \\
+    = \mathbb E\Big [\frac{1}{m+1}\sum_{i=m+1}^{n+1}(\alpha/2 - t^{i*}_{\alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\}\Big ]- \mathbb E \Big [\frac{d}{d\epsilon}R(\hat h^{1-\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0} \Big] -\\
+    \mathbb E\Big [\frac{1}{m+1}\sum_{i=m+1}^{n+1}(1 - \alpha/2 - t^{i*}_{1 - \alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}\Big ]+ \mathbb E \Big [\frac{d}{d\epsilon}R(\hat h^{\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0} \Big].
+\end{multline*}
+Since $\alpha -t^{i*}_{\alpha} \in [0,1]$, for non-negative $f$, we have lower bound
+$$\frac{1}{m+1}\sum_{i=m+1}^{n+1}(\alpha - t^{i*}_{\alpha})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{1-\alpha}_{\phi_j }(x^i)\}\geq0.$$
+Applying this to Equation~\ref{D1} gives us the first part
+of Theorem 2:
+\begin{multline*}
+    \mathbb E [f(x^{n+1})(\mathbf 1\{\phi^i_j\in\hat C_j(x^{n+1})\}-(1-\alpha))] \geq - \mathbb E \Big [\frac{d}{d\epsilon}R(\hat h^{1-\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0} \Big] + \mathbb E \Big [\frac{d}{d\epsilon}R(\hat h^{\alpha/2}_{\phi_j } + \epsilon f) \Big |_{\epsilon=0} \Big].
+\end{multline*}
+
+Relaxing the assumption of $f$'s non-negativity and using the exchangeability property, we also have upper bound
+\begin{multline*}
+\Big |\mathbb E \Big [ \frac{1}{m+1}\sum_{i=m+1}^{n+1}(\alpha/2 - t^{i*}_{\alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\} \Big ] - \\
+\mathbb E\Big [\frac{1}{m+1}\sum_{i=m+1}^{n+1}(1 - \alpha/2 - t^{i*}_{1 - \alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}\Big ] \Big | \\ 
+\leq 
+\Big |\mathbb E \Big [ \frac{1}{m+1}\sum_{i=m+1}^{n+1}(\alpha/2 - t^{i*}_{\alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\} \Big ]\Big | + \\
+\Big |\mathbb E\Big [\frac{1}{m+1}\sum_{i=m+1}^{n+1}(1 - \alpha/2 - t^{i*}_{1 - \alpha/2})f(x^i)\mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}\Big ] \Big | \\
+\leq \mathbb E\Big [\frac{1}{m+1} \sum_{i=m+1}^{n+1}|f(x^i)|\mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\} \Big ] \ + \\
+\mathbb E \Big [\frac{1}{m+1} \sum_{i=m+1}^{n+1}|f(x^i)|\mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}\Big ] \\
+= \mathbb E[|f(x^i)| \mathbf 1\{\phi^i_j= \hat h^{1-\alpha/2}_{\phi_j }(x^i)\}] \ +
+\mathbb E[|f(x^i)| \mathbf 1\{\phi^i_j= \hat h^{\alpha/2}_{\phi_j }(x^i)\}],
+\end{multline*}
+which gives us the second part of Theorem 2.
+\end{proof}
+
+
+
+
+\begin{lemma}
+Assume that $(X^i, Y^i),..., (X^{n+1}, Y^{n+1}) \overset{i.i.d.}\sim P$ and that $K$ is uniformly bounded. Furthermore, for $j \in \{1,...,J\}$, suppose Assumption \ref{assumption:moment} holds and that the distribution of $\phi_j|X$ is continuous with a uniformly bounded density. Then
+for any $f \in \mathcal H$ and $j \in \{1,...,J\}$,
+$$\frac{|\epsilon_{int}|}{\mathbb E_P[|f(X)|]}\leq O\Big(\frac{d\log(n)}{\lambda n}\Big )\frac{\mathbb E[\max_{1\leq i \leq n+1}|f(X^i)|]}{\mathbb E_P[|f(X)|]}$$
+\end{lemma}
+
+\begin{proof}[Proof of Interpolation Error Bound]
+The proof directly applies the results from \citet{gibbs2025conformal} and uses the stability of RKHS regression, but replacing the non-conformal score
+with the Shapley value.
+
+    
+\end{proof}
+
+\begin{assumption}[Bounded Utility]
+\label{bounded_utility}
+    Assume the utility function is bounded, i.e., $|\phi_j| \leq B$  almost surely.
+\end{assumption}
+
+It is known that Assumption~\ref{bounded_utility} holds for utility 
+Shannon mutual information with $B = \min\{H(S),H(Y)\}$,
+and for variance of conditional expectation
+with $B = \text {Var}(X)$.
+
+\begin{lemma}[RKHS Width Bound]
+\label{rkhs_width_bound}
+Let $\kappa = \sup_x \sqrt{K(x,x)}$. Let $C_\Omega(x) = ||\Omega(x)||_2$ be the norm
+of the finite-dimensional features at test point $x$.
+We also assume that Assumption~\ref{bounded_utility}. Then the width $W_j(x^{n+1})$ of conditional interval $\hat C_j(x^{n+1})$ with regularization parameter $\lambda$
+satisfies:
+$$W(x^{n+1}) \leq 2(\kappa\sqrt{\frac B \lambda} + C_\Omega(x)\sqrt\frac{B}{\lambda_2})$$
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{rkhs_width_bound}]
+    Since $\hat h^{1-\alpha}_{\phi_j }$ minimizes
+$$J(h_{\phi_j}^{1-\alpha})=\frac{1}{m+1} \sum_{i=m+1}^{n+1} \ell_\alpha(h^{1-\alpha}_{\phi_j}(x^i), \phi_j^i)+\lambda_1||h_K||^2_K + \lambda_2||\beta||^2_2,$$
+$J(\hat h^{1-\alpha}_{\phi_j })$ must be lower
+than the objective value of the zero function ($h_{\phi_j}^{1-\alpha} = 0$). Additionally, since
+$\ell_\alpha(0, \phi_j) \leq \max(\alpha, 1-\alpha)|\phi_j|$, because we set both $h_k$ and $\beta$ to 0, and because we assume Assumptions~\ref{bounded_utility},
+$$J(0)=\frac{1}{m+1} \sum_{i=m+1}^{n+1} \ell_\alpha(h^{1-\alpha}_{\phi_j}(x^i), \phi_j^i) + 0 \leq B.$$
+Then,
+$$\lambda_1||\hat h_K||^2_K \leq J(\hat h) \leq B,$$ or
+$$||\hat h_K||_K \leq\sqrt{\frac{B}{\lambda_1}}.$$
+Similarly,
+$$\lambda_2||\hat \beta||^2_2 \leq J(\hat h) \leq B,$$ or
+$$||\hat \beta||_2 \leq\sqrt{\frac{B}{\lambda_2}}.$$
+
+We exploit the reproducing property of the RKHS,
+which states that $h_K(x) = \langle h_K, K(x,\cdot)\rangle_K| \leq ||h||.$
+Using the Cauchy-Schwarz inequality, we get:
+$$|h_K(x)| = |\langle h_K, K(x,\cdot)\rangle_K| \leq 
+||h_K||_K \cdot ||K(x, \cdot)||_K.$$
+Again, from the reproducing property and Cauchy-Schwarz, $$||K(x,\cdot)||_K = \sqrt{\langle K(x,\cdot), K(x,\cdot)\rangle} = \sqrt{K(x,x)} \leq \kappa.$$
+So 
+\begin{align*}
+    |\hat h(x)| &\leq \kappa||\hat h_K||_K + ||\hat \beta||_2 \cdot ||\Omega(x)||\\
+    |\hat h(x)| &\leq \kappa\sqrt{\frac{B}{\lambda_1}} + C_\Omega(x) \sqrt{\frac{B}{\lambda_2}}
+\end{align*}
+$W(x) \leq |\hat h^U(x)| + |\hat h^L(x)|$
+\end{proof}
+
+In the case of classification, $B = \log(N_{classes})$
+%In the case of regression, $B = Var(Y)$, so standard target to have
+%unit variance
+
+
+
+
+
+
+
+
+
+
+To show near-optimality of model selection for classification, we require two assumptions from \citet{he2024efficient}.
+\begin{assumption}[$\epsilon$-Approximate Conditional Independence]
+\label{assumption:conditional}
+There exists a positive constant $\epsilon \geq 0$
+such that, for all $S, S' \subseteq V$ with $S \cap S' = \emptyset$, we have $I(S;S'|Y) \leq \epsilon$
+\end{assumption}
+
+\begin{assumption}[$\epsilon$-Approximate Marginal Independence]
+\label{assumption:marginal}
+There exists a positive constant $\epsilon > 0$ such
+that, for all $S, S' \subseteq V$ with $S \cap S'=\emptyset$, we have $I(S;S') \leq \epsilon$
+    
+\end{assumption}
+
+
+
+
+To show near-optimality of model selection for regression, we consider a set $\Omega(V)=\{\Omega_j(X_j)\}_{j=1}^p$ of feature transformations such that two additional assumptions from \citet{he2024efficient} are satisfied.
+\begin{assumption}[Linearity]
+\label{assumption:linearity}
+For some $\alpha$ and $\beta_j$ for $j \in \{1,...,p\}$,
+    $$\mathbb E[Y | \Omega(V)]=\sum_{X_j \in V} \beta_j \Omega_j(X_j) + \alpha$$
+\end{assumption}
+\begin{assumption}[Multivariate Gaussian Marginal Distribution]
+\label{assumption:multivariate}
+    For some mean $\mu$ and covariance  matrix $\Sigma$,
+    $$\Omega(V) \sim \mathcal N(\mu, \Sigma)$$
+\end{assumption}
+
+% \begin{theorem}[Selection Consistency for Classification]
+% Define $$f_u(S) := \inf_{c \in \mathcal Y} \mathbb E[\ell(Y,c)]-\inf_{\mu_S \in \mathcal F} \mathbb E[\ell(Y, \mu_S(X_S))]$$
+% Let $S(x)$ be the optimal set of size $q$. That is,
+% $S(x) = \arg\max_{S:|S|\leq q} f_u(S|X=x)$
+% Let $S^\alpha_q$ be the set of size $q$ selected
+% by our algorithm for target 
+% failure probability $\alpha \in (0,1)$.
+% Under Assumptions~ \ref{assumption:moment}-\ref{assumption:marginal},
+% the following inequality holds with probability
+% at least $1 - \alpha - 2\lambda_1 \epsilon_1 - 2\lambda_2 \epsilon_2$:
+% $$\text {val} (S^\alpha_q) \geq \text{val}(S^*)-\sum_{j\in S^*} 2(\kappa\sqrt{\frac B \lambda_1} + C_\Omega(x)\sqrt\frac{B}{\lambda_2}) - 4q \delta$$
+
+    
+% \end{theorem}
+
+
+\begin{proof}[Proof of Theorem 3.7] 
+Let $\hat h_j^L:=\hat h _{\phi_j}^{\frac{\alpha}{2q}}(x^{n+1})$
+and let $\hat h_j^U := \hat h _{\phi_j}^{1-\frac{\alpha}{2q}}(x^{n+1})$.
+    We define failure as the case where any
+    individual modality in the selected set overestimates its value, or any modality
+    in the optimal set underestimates its value.
+    Let $f(\cdot) = f_K(\cdot)+\Omega(\cdot)^\top \beta$ indicate the
+    weighting of interest and we deconstruct $\hat h_j^L = \hat h^L_{j,K}(\cdot)+\Omega(\cdot)^\top\hat \beta^{n+1}$.
+    Applying a union bound and Lemma 2, we get:
+    \begin{align*}
+       \mathbb P(\underset{j \in \hat S^\alpha_q}\bigcup\phi_j^{n+1} < \hat h_j^L \underset{j \in S^*_q}\bigcup \phi_j^{n+1} > \hat h^U_j) &\leq
+    \sum_{j\in \hat S^\alpha_q} \mathbb P(\phi_j^{n+1} < \hat h_j^L) + \sum_{j\in S^*_q} \mathbb P(\phi_j^{n+1} > \hat h_j^U) \\ 
+    &\leq \sum_{j\in \hat S^\alpha_q}(\frac{\alpha}{2q})+
+    \sum_{j\in S^*_q}(\frac{\alpha}{2q}) + 2\lambda_1 \epsilon_1+2\lambda_2 \epsilon_2 \\
+    &\leq \frac{|\hat S^\alpha_q|+|S^*_q|}{2q}\alpha + 2\lambda_1\epsilon_1 + 2\lambda_2\epsilon_2\\
+    &= \alpha + 2\lambda_1\epsilon_1 + 2\lambda_2\epsilon_2 +\sum_{j \in \hat S_q^\alpha}\frac{\epsilon_{int,j}}{E_P [f(X)]} + \sum_{j \in S^*_q}\frac{\epsilon_{int,j}}{E_P [f(X)]},
+    \end{align*}
+    where $$\epsilon_1=\sum_{j\in \hat S^\alpha_q} \frac{\mathbb E[\langle \hat h_{j, K}^{L}, f_K \rangle_K]}{\mathbb E_P [f(X)]}+
+    \sum_{j\in S^*_q} \frac{\mathbb E[\langle \hat h_{j, K}^{L}, f_K \rangle_K]}{\mathbb E_P [f(X)]}$$
+    and
+    $$\epsilon_2 = \sum_{j\in \hat S^\alpha_q} \frac{\mathbb E[\langle \hat \beta^{n+1}, \beta \rangle]}{\mathbb E_P [f(X)]}+
+    \sum_{j\in S^*_q} \frac{\mathbb E[\langle \hat \beta^{n+1}, \beta \rangle_K]}{\mathbb E_P [f(X)]},$$
+    and modality interpolation errors $\epsilon_{int,j}$.
+
+Following \citet{he2024efficient}, we choose
+loss function $\ell(y, \hat y) := -\mathbf 1(y=1) \log \hat y - \mathbf 1(y=0) \log (1-\hat y)$. 
+Because $\hat \mu_S$ minimizes $\mathbb E[\ell(Y, \mu_S(X_S)]$,
+$f_u(S) = \mathbb E[\ell(Y,\hat \mu_\emptyset)] -\mathbb E[\ell(Y, \hat \mu_S(X_S))]$, with trivial predictor
+$\mu_\emptyset$.
+
+Proposition 3.2 from \citet{he2024efficient} demonstrates that the utility function is
+monotonically non-decreasing, meaning that a larger set of modalities
+will always have a utility function as high or higher than a smaller set.
+
+We define the Shapley value of the utility function: 
+$$\varphi_j = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}[f_u(S \cup j) - f_u(S)]$$
+
+Recall the Shapley value of the loss function for some point $i$:
+$$\phi_j^i = \sum_{S \subseteq [p] \setminus \{j\}} \frac{|S|!(p-|S|-1)!}{p!}[\text{val}(y^i, \hat \mu_{S\cap j}(x^i_{S\cap j})) - \text{val}(y^i, \hat \mu_{S\cap j}(x^i_{S\cap j}))],$$
+with $\text{val}(y^i, \hat \mu_{S\cap j}(x^i_{S\cap j}))=\ell(y^i, \hat \mu_\emptyset)-\ell(y^i,\hat \mu_S(x^i_S))$.
+From linearity of expectation, it is easy to show
+that the expected Shapley value of the loss function conditional on the training is
+equivalent to the Shapley value of the utility function:
+\begin{align*}
+    \mathbb E[\phi_j^{n+1}|\hat \mu]&=\sum_{S\subseteq[p]\setminus\{j\}}\frac{|S|!(p-|S|-1)!}{p!} \{\mathbb E[\text{val}(Y, \hat \mu_{S\cup j}(X_{S\cup j}))] - \mathbb E[\text{val}(Y, \hat \mu_{S}(X_{S}))]\} \\
+    &= \sum_{S\subseteq[p]\setminus\{j\}}\frac{|S|!(p-|S|-1)!}{p!} [f_u(S\cup j) - f_u(S)]\\
+    &= \varphi_j
+\end{align*}
+
+
+
+Now that we have these pieces, we also apply Propositions 5.1, 5.2, and 5.3
+from \citet{he2024efficient}, which under Assumptions~\ref{assumption:conditional} and \ref{assumption:marginal}, results in the following equation 
+for some set $S$ of size at most$q$:
+\begin{align*}
+    \sum_{j\in S} I(X_j,Y) - q\delta \leq \sum_{j\in S} I(X_j,Y) - |S|\delta \leq\sum_{j\in S} \varphi_j &\leq \sum_{j\in S} I(X_j,Y) + |S|\delta \leq \sum_{j\in S} I(X_j,Y) + q\delta \\
+    I(V_{S},Y) - 2q\delta \leq \sum_{j\in S} \varphi_j &\leq I(V_{S},Y) + 2q\delta \\
+    f_u(S) - 2q\delta \leq \sum_{j\in S} \varphi_j &\leq f_u(S) + 2q\delta
+    % &= \text{Var}(\mathbb E[Y|V_{S_q^\alpha}]) \\
+    % &= \text{val}(S)
+\end{align*}
+
+Since the lower bound holds for all $j \in \hat S^\alpha_q$ and because 
+we select a subset of size at most $q$ maximizing the sum of lower confidence bounds:
+$$f_u(\hat S^\alpha_q) \geq \sum_{j\in \hat S^\alpha_q} \varphi_j - 2q\delta =\sum_{j\in \hat S^\alpha_q}\mathbb E[\phi_j^{n+1}]-2q\delta \geq \sum_{j\in \hat S^\alpha_q} \hat h_j^L - 2q\delta \geq\sum_{j\in S^*_q} \hat h_j^L - 2q\delta.$$
+We also have that 
+$$f_u(S^*_q) \leq \sum_{j\in \hat S^\alpha_q} \varphi_j +2q\delta =\sum_{j\in \hat S^\alpha_q}\mathbb E[\phi_j^{n+1}]+2q\delta\leq \sum_{j\in \hat S^\alpha_q} \hat h_j^U + 2q\delta \leq \sum_{j\in S^*_q} \hat h_j^U + 2q\delta.$$
+Because $\hat h_j^L= \hat h_j^U - W_j$ for all $j \in \hat S^\alpha_q$
+$$\mathbb \sum_{j\in \hat S^\alpha_q} (\hat h_j^U - W_j)=\mathbb \sum_{j\in \hat S^\alpha_q} \hat h_j^U - \mathbb \sum_{j\in \hat S^\alpha_q} W_j$$
+Remember that the width $W_j$ of our interval is
+bounded according to Lemma~\ref{rkhs_width_bound}.
+Then,
+
+\begin{align*}
+    f_u(\hat S^\alpha_q) &\geq f_u(S^*_q) - \mathbb \sum_{j\in \hat S^\alpha_q} W_j - 4q\delta \\
+    &= f_u(S^*_q) - \sum_{j\in \hat S^\alpha_q} 2(\kappa\sqrt{\frac B \lambda} + C_\Omega(x)\sqrt\frac{B}{\lambda_2}) - 4q\delta
+\end{align*}
+
+In the case of regression, we choose loss function
+$\ell(y, \hat y) := (y-\hat y)^2$.
+We also require a linear transformation $V'$ of $\Phi(V)$ from
+Singular Value Decomposition (SVD):
+
+    
+\end{proof}
+
+% \begin{theorem}[Selection Consistency for Regression]
+% Let $S^*$ be the optimal set of size $q$.
+% Let $S^\alpha_q$ be the set of size $q$ selected
+% by our algorithm for target 
+% failure probability $\alpha \in (0,1)$, and
+% let $\ell(y, \hat y) = (y-\hat y)^2$
+% Under Assumptions~ .........,
+% the following inequality holds with probability
+% at least $1 - \alpha - 2\lambda \epsilon_n$:
+% $$\text {val} (S^\alpha_q) \geq \text{val}(S^*)-\sum_{j\in S^*} 2(\kappa\sqrt{\frac B \lambda} + C_\Omega(x)\sqrt\frac{B}{\lambda_2})$$
+
+
+    
+% \end{theorem}
+
+\begin{proof}[Proof of Theorem 3.10] 
+    The proof follows the proof of Theorem 3.7, but without a
+    $\delta$ term. Here we replace
+    \citet{he2024efficient}'s Proposition 3.2 with their Proposition 3.5,
+    and Proposition 5.1, 5.2, and 5.3 with their
+    Proposition 5.5, which allows strict additivity and monotonicity
+    of Shapley values $\varphi$.
+\end{proof}
+
+
+
+
+
+
+
+\bibliography{main.bib}
+\bibliographystyle{icml2025}
+
+
+
+
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018, and modified by Alexandre Bouchard in
+% 2019 and 2021 and by Csaba Szepesvari, Gang Niu and Sivan Sabato in 2022.
+% Modified again in 2023 and 2024 by Sivan Sabato and Jonathan Scarlett.
+% Previous contributors include Dan Roy, Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
